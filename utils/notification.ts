@@ -1,4 +1,3 @@
-import Constants from "expo-constants";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
@@ -11,31 +10,8 @@ Notifications.setNotificationHandler({
   }),
 });
 
-async function sendPushNotification(expoPushToken: string) {
-  const message = {
-    to: expoPushToken,
-    sound: "default",
-    title: "Original Title",
-    body: "And here is the body!",
-    data: { someData: "goes here" },
-  };
-
-  await fetch("https://exp.host/--/api/v2/push/send", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Accept-encoding": "gzip, deflate",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(message),
-  });
-}
-
-async function registerForPushNotificationsAsync() {
-  let token: Notifications.ExpoPushToken = {
-    type: "expo",
-    data: "",
-  };
+async function registerForPushNotificationsAsync(): Promise<string> {
+  let token: Notifications.DevicePushToken | undefined = undefined;
 
   if (Platform.OS === "android") {
     Notifications.setNotificationChannelAsync("default", {
@@ -56,17 +32,15 @@ async function registerForPushNotificationsAsync() {
     }
     if (finalStatus !== "granted") {
       alert("Failed to get push token for push notification!");
-      return;
+      return "";
     }
-    token = await Notifications.getExpoPushTokenAsync({
-      projectId: Constants.expoConfig?.extra?.eas.projectId,
-    });
+    token = await Notifications.getDevicePushTokenAsync();
     console.log(token);
   } else {
     alert("Must use physical device for Push Notifications");
   }
 
-  return token.data;
+  return token?.data as string;
 }
 
-export { registerForPushNotificationsAsync, sendPushNotification };
+export default registerForPushNotificationsAsync;

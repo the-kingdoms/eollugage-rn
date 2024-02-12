@@ -5,12 +5,10 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
+  Text,
 } from "react-native";
 import WebView from "react-native-webview";
-import {
-  registerForPushNotificationsAsync,
-  sendPushNotification,
-} from "./utils/notification";
+import registerForPushNotificationsAsync from "./utils/notification";
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
@@ -19,7 +17,7 @@ export default function App() {
   const [expoPushToken, setExpoPushToken] = useState("");
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) =>
-      setExpoPushToken(token ?? "")
+      setExpoPushToken(token)
     );
   }, []);
   return (
@@ -30,10 +28,7 @@ export default function App() {
           style={styles.webview}
           source={{ uri: "https://gage.eolluga.com" }}
         />
-        <Button
-          title="a"
-          onPress={async () => await sendPushNotification(expoPushToken)}
-        />
+        <Text>{expoPushToken}</Text>
       </SafeAreaView>
     </Fragment>
   );
