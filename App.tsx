@@ -1,25 +1,11 @@
-import { Fragment, useEffect, useState } from "react";
-import {
-  Dimensions,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  TextInput,
-  View,
-} from "react-native";
+import { Fragment } from "react";
+import { Dimensions, SafeAreaView, StatusBar, StyleSheet } from "react-native";
 import WebView from "react-native-webview";
-import registerForPushNotificationsAsync from "./utils/notification";
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 
 export default function App() {
-  const [expoPushToken, setExpoPushToken] = useState("");
-  useEffect(() => {
-    registerForPushNotificationsAsync().then((token) =>
-      setExpoPushToken(token)
-    );
-  }, []);
   return (
     <Fragment>
       <StatusBar />
