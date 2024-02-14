@@ -1,11 +1,11 @@
 import { Fragment, useEffect, useState } from "react";
 import {
-  Button,
   Dimensions,
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  Text,
+  TextInput,
+  View,
 } from "react-native";
 import WebView from "react-native-webview";
 import registerForPushNotificationsAsync from "./utils/notification";
@@ -28,7 +28,6 @@ export default function App() {
           style={styles.webview}
           source={{ uri: "https://gage.eolluga.com" }}
         />
-        <Text>{expoPushToken}</Text>
       </SafeAreaView>
     </Fragment>
   );
