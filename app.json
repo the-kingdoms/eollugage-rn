@@ -4,27 +4,28 @@
     "slug": "eolluga-rn",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo/eollugage/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash/eollugage_store.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.eolluga.eollugage"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo/eollugage/logo.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.eolluga.eollugage"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/logo/eollugage/favicon-96x96.png"
     },
     "extra": {
       "eas": {
