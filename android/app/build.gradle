@@ -78,8 +78,8 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
     ndkVersion rootProject.ext.ndkVersion
+    compileSdk 34
 
-    compileSdkVersion rootProject.ext.compileSdkVersion
 
     namespace 'com.eolluga.eollugage'
     defaultConfig {
@@ -112,6 +112,7 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    buildToolsVersion '30.0.3'
 }
 
 // Apply static values from `gradle.properties` to the `android.packagingOptions`
