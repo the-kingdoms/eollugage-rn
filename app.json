@@ -14,6 +14,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
+      "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.eolluga.eollugage"
     },
     "android": {
@@ -24,9 +25,10 @@
       },
       "package": "com.eolluga.eollugage"
     },
-    "web": {
-      "favicon": "./assets/logo/eollugage/favicon-96x96.png"
-    },
+    "plugins": [
+      "@react-native-firebase/app",
+      "@react-native-firebase/messaging"
+    ],
     "extra": {
       "eas": {
         "projectId": "b7216933-9e30-4f27-b76d-e12a2572ef74"
