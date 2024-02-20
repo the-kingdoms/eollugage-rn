@@ -1,12 +1,11 @@
-import NotificationContainer from "components/NotificationContainer";
 import WebviewContainer from "components/WebViewContainer";
+import { StatusBar } from "expo-status-bar";
 import { Fragment } from "react";
-import { StatusBar } from "react-native";
 
 export default function App() {
   return (
     <Fragment>
-      <StatusBar />
+      <StatusBar style="dark" />
       <WebviewContainer />
       {
         //<NotificationContainer />
