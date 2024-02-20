@@ -1,4 +1,5 @@
-import { setStatusBarStyle } from "expo-status-bar";
+import { statusBarStyleAtom } from "components/CustomStatusBar";
+import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import {
   BackHandler,
@@ -10,7 +11,7 @@ import {
 import { URL } from "react-native-url-polyfill";
 import { WebView, WebViewNavigation } from "react-native-webview";
 
-const uri = "172.30.1.40:3000";
+const uri = "http://172.30.1.40:3000";
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 
@@ -39,6 +40,7 @@ function WebviewContainer({ onLayout }: WebviewContainerProps) {
   const [webviewNavigationState, setWebviewNavigationState] = useState<
     WebViewNavigation | undefined
   >(undefined);
+  const [, setStatusBarStyle] = useAtom(statusBarStyleAtom);
 
   useEffect(() => {
     const backAction = () => {
@@ -58,7 +60,15 @@ function WebviewContainer({ onLayout }: WebviewContainerProps) {
   useEffect(() => {
     if (webviewNavigationState?.url) {
       const url = new URL(webviewNavigationState.url);
-      setStatusBarStyle(url.pathname === "/" ? "dark" : "light");
+      url.pathname === "/"
+        ? setStatusBarStyle({
+            barStyle: "light-content",
+            backgroundColor: "black",
+          })
+        : setStatusBarStyle({
+            barStyle: "dark-content",
+            backgroundColor: "white",
+          });
     }
   }, [webviewNavigationState]);
 

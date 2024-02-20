@@ -22,6 +22,7 @@
     "expo-dev-client": "~2.4.13",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
+    "jotai": "^2.6.4",
     "react": "18.2.0",
     "react-native": "0.72.10",
     "react-native-push-notification": "^8.1.1",
