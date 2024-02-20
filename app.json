@@ -7,8 +7,6 @@
     "icon": "./assets/logo/eollugage/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash/eollugage_store.png",
-      "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
     "assetBundlePatterns": ["**/*"],
