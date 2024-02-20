@@ -52,6 +52,7 @@ class LocalNotificationService {
       // IOS and Android properties
       ...buildIOSNotification(notify),
       // IOS and Android properties
+      id: notify.id || 0,
       title: notify.title || "",
       message: notify.message || "",
       playSound: notify.playSound || false,
