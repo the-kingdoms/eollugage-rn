@@ -20,6 +20,7 @@ module.exports = function (api) {
           ],
           alias: {
             "@utils": "./utils",
+            "@components": "./components",
           },
         },
       ],

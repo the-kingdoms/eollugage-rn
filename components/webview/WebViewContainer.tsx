@@ -11,7 +11,7 @@ import {
 import { URL } from "react-native-url-polyfill";
 import { WebView, WebViewNavigation } from "react-native-webview";
 
-const uri = "http://172.30.1.40:3000";
+const uri = "http://192.168.0.33:3000";
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 
@@ -46,16 +46,18 @@ function WebviewContainer({ onLayout }: WebviewContainerProps) {
     const backAction = () => {
       if (webviewNavigationState?.canGoBack) {
         webviewRef.current?.goBack();
+        return true;
       }
-      return true;
+      return false;
     };
 
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       backAction
     );
-    return () => backHandler.remove();
-  }, []);
+    return () =>
+      BackHandler.removeEventListener("hardwareBackPress", backAction);
+  }, [webviewNavigationState?.canGoBack]);
 
   useEffect(() => {
     if (webviewNavigationState?.url) {
@@ -72,22 +74,14 @@ function WebviewContainer({ onLayout }: WebviewContainerProps) {
     }
   }, [webviewNavigationState]);
 
-  const sendMessage = (message: string) => {
-    webviewRef.current?.postMessage(message);
-  };
-
-  const onMessage = (event: any) => {
-    const data = JSON.parse(event.nativeEvent.data);
-    console.log(data);
-  };
   return (
     <SafeAreaView style={styles.container} onLayout={onLayout}>
       <WebView
         style={styles.webview}
         ref={webviewRef}
         onNavigationStateChange={setWebviewNavigationState}
-        onMessage={onMessage}
         source={{ uri }}
+        allowsBackForwardNavigationGestures
       />
     </SafeAreaView>
   );
