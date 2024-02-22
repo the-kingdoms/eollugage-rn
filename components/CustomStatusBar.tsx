@@ -1,14 +1,6 @@
 import { SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
 import { atom, useAtom } from "jotai";
-
-interface StatusBarStyle {
-  barStyle: "dark-content" | "light-content";
-  backgroundColor: string;
-}
-const statusBarStyleAtom = atom<StatusBarStyle>({
-  barStyle: "dark-content",
-  backgroundColor: "black",
-});
+import { statusBarStyleAtom } from "datas/style";
 
 const STATUSBAR_HEIGHT = StatusBar.currentHeight;
 
