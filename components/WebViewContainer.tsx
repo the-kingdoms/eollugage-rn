@@ -7,7 +7,7 @@ import { BackHandler, LayoutChangeEvent, SafeAreaView } from "react-native";
 import { URL } from "react-native-url-polyfill";
 import { WebView, WebViewNavigation } from "react-native-webview";
 
-const uri = "https://develop.gage.eolluga.com";
+const uri = "https://gage.eolluga.com";
 
 interface WebviewContainerProps {
   onLayout?: (event: LayoutChangeEvent) => void;
@@ -48,7 +48,6 @@ function WebviewContainer({ onLayout }: WebviewContainerProps) {
         source={{ uri }}
         allowsBackForwardNavigationGestures
       />
-      <SendTest webviewRef={webviewRef} />
       {webviewRef.current && <NotificationContainer webviewRef={webviewRef} />}
     </SafeAreaView>
   );
