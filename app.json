@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "eolluga-rn",
-    "slug": "eolluga-rn",
+    "name": "eollugage-rn",
+    "slug": "eollugage-rn",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo/eollugage/logo.png",
@@ -23,10 +23,7 @@
       },
       "package": "com.eolluga.eollugage"
     },
-    "plugins": [
-      "@react-native-firebase/app",
-      "@react-native-firebase/messaging"
-    ],
+    "plugins": ["@react-native-firebase/app", "@react-native-firebase/messaging"],
     "extra": {
       "eas": {
         "projectId": "b7216933-9e30-4f27-b76d-e12a2572ef74"
