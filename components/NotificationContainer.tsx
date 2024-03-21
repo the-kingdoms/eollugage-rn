@@ -1,8 +1,9 @@
 import fcmService from "@utils/fcm/service";
 import localNotificationService from "@utils/noti/service";
 import { useEffect } from "react";
+import WebView from "react-native-webview";
 
-function NotificationContainer() {
+function NotificationContainer({ webviewRef }: { webviewRef: React.RefObject<WebView<{}>> }) {
   useEffect(() => {
     fcmService.registerAppWithFCM();
     fcmService.register(onRegister, onNotification, onOpenNotification);
@@ -12,7 +13,8 @@ function NotificationContainer() {
   const onRegister = (tk: string) => {
     console.log("[App] onRegister : token :", tk);
     if (tk) {
-      // send token to web view
+      const message = { type: "fcmtoken", token: tk };
+      webviewRef.current?.postMessage(JSON.stringify(message));
     }
   };
 
