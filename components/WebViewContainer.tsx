@@ -1,3 +1,5 @@
+import NotificationContainer from "@components/NotificationContainer";
+import SendTest from "@components/SendTest";
 import { setThemeAtom, webviewStyleAtom } from "datas/style";
 import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
@@ -5,7 +7,7 @@ import { BackHandler, LayoutChangeEvent, SafeAreaView } from "react-native";
 import { URL } from "react-native-url-polyfill";
 import { WebView, WebViewNavigation } from "react-native-webview";
 
-const uri = "https://gage.eolluga.com";
+const uri = "https://develop.gage.eolluga.com";
 
 interface WebviewContainerProps {
   onLayout?: (event: LayoutChangeEvent) => void;
@@ -13,9 +15,7 @@ interface WebviewContainerProps {
 
 function WebviewContainer({ onLayout }: WebviewContainerProps) {
   const webviewRef = useRef<WebView>(null);
-  const [webviewNavigationState, setWebviewNavigationState] = useState<
-    WebViewNavigation | undefined
-  >(undefined);
+  const [webviewNavigationState, setWebviewNavigationState] = useState<WebViewNavigation | undefined>(undefined);
   const [webviewStyle] = useAtom(webviewStyleAtom);
   const [, setTheme] = useAtom(setThemeAtom);
 
@@ -28,8 +28,7 @@ function WebviewContainer({ onLayout }: WebviewContainerProps) {
       return false;
     };
     BackHandler.addEventListener("hardwareBackPress", backAction);
-    return () =>
-      BackHandler.removeEventListener("hardwareBackPress", backAction);
+    return () => BackHandler.removeEventListener("hardwareBackPress", backAction);
   }, [webviewNavigationState?.canGoBack]);
 
   useEffect(() => {
@@ -49,6 +48,8 @@ function WebviewContainer({ onLayout }: WebviewContainerProps) {
         source={{ uri }}
         allowsBackForwardNavigationGestures
       />
+      <SendTest webviewRef={webviewRef} />
+      {webviewRef.current && <NotificationContainer webviewRef={webviewRef} />}
     </SafeAreaView>
   );
 }
