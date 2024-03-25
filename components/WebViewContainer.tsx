@@ -9,8 +9,8 @@ import { BackHandler, LayoutChangeEvent, SafeAreaView } from "react-native";
 import { URL } from "react-native-url-polyfill";
 import { WebView, WebViewNavigation } from "react-native-webview";
 
-//const uri = "https://gage.eolluga.com";
-const uri = "http://10.0.2.2:3000";
+const uri = "https://gage.eolluga.com";
+
 interface WebviewContainerProps {
   onLayout?: (event: LayoutChangeEvent) => void;
 }
