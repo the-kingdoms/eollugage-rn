@@ -1,5 +1,7 @@
+import IpcContainer from "@components/IpcContainer";
 import NotificationContainer from "@components/NotificationContainer";
-import SendTest from "@components/SendTest";
+import onMessageHandler from "@components/ipc/onMessageHandler";
+import IpcMessageAtom from "datas/message";
 import { setThemeAtom, webviewStyleAtom } from "datas/style";
 import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
@@ -7,8 +9,8 @@ import { BackHandler, LayoutChangeEvent, SafeAreaView } from "react-native";
 import { URL } from "react-native-url-polyfill";
 import { WebView, WebViewNavigation } from "react-native-webview";
 
-const uri = "https://gage.eolluga.com";
-
+//const uri = "https://gage.eolluga.com";
+const uri = "http://10.0.2.2:3000";
 interface WebviewContainerProps {
   onLayout?: (event: LayoutChangeEvent) => void;
 }
@@ -18,6 +20,7 @@ function WebviewContainer({ onLayout }: WebviewContainerProps) {
   const [webviewNavigationState, setWebviewNavigationState] = useState<WebViewNavigation | undefined>(undefined);
   const [webviewStyle] = useAtom(webviewStyleAtom);
   const [, setTheme] = useAtom(setThemeAtom);
+  const [, setIpcMessageAtom] = useAtom(IpcMessageAtom);
 
   useEffect(() => {
     const backAction = () => {
@@ -46,9 +49,11 @@ function WebviewContainer({ onLayout }: WebviewContainerProps) {
         ref={webviewRef}
         onNavigationStateChange={setWebviewNavigationState}
         source={{ uri }}
+        onMessage={(e) => onMessageHandler(e, setIpcMessageAtom)}
         allowsBackForwardNavigationGestures
       />
-      {webviewRef.current && <NotificationContainer webviewRef={webviewRef} />}
+      <NotificationContainer />
+      {webviewRef.current && <IpcContainer webviewRef={webviewRef} />}
     </SafeAreaView>
   );
 }

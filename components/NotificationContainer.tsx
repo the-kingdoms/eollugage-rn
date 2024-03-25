@@ -1,9 +1,12 @@
 import fcmService from "@utils/fcm/service";
 import localNotificationService from "@utils/noti/service";
+import fcmTokenAtom from "datas/fcmtoken";
+import { useAtom } from "jotai";
 import { useEffect } from "react";
-import WebView from "react-native-webview";
 
-function NotificationContainer({ webviewRef }: { webviewRef: React.RefObject<WebView<{}>> }) {
+function NotificationContainer() {
+  const [, setFcmToken] = useAtom(fcmTokenAtom);
+
   useEffect(() => {
     fcmService.registerAppWithFCM();
     fcmService.register(onRegister, onNotification, onOpenNotification);
@@ -11,15 +14,14 @@ function NotificationContainer({ webviewRef }: { webviewRef: React.RefObject<Web
   }, []);
 
   const onRegister = (tk: string) => {
-    console.log("[App] onRegister : token :", tk);
+    console.log("[NotificationContainer] onRegister : token :", tk);
     if (tk) {
-      const message = { type: "fcmtoken", token: tk };
-      webviewRef.current?.postMessage(JSON.stringify(message));
+      setFcmToken(tk);
     }
   };
 
   const onNotification = (notify: any) => {
-    console.log("[App] onNotification : notify :", notify);
+    console.log("[NotificationContainer] onNotification : notify :", notify);
     const options = {
       soundName: "default",
       playSound: true,
@@ -31,7 +33,7 @@ function NotificationContainer({ webviewRef }: { webviewRef: React.RefObject<Web
   };
 
   const onOpenNotification = (notify: any) => {
-    console.log("[App] onOpenNotification : notify :", notify);
+    console.log("[NotificationContainer] onOpenNotification : notify :", notify);
   };
   return <></>;
 }
