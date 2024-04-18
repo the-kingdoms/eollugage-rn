@@ -1,5 +1,6 @@
 import sendFcmToken from "@components/ipc/send/sendFcmToken";
 import sendPlatform from "@components/ipc/send/sendPlatform";
+import appleLogin from "@components/lib/appleLogin";
 import fcmTokenAtom from "datas/fcmtoken";
 import IpcMessageAtom from "datas/message";
 import { useAtom } from "jotai";
@@ -19,6 +20,10 @@ export default function IpcContainer({ webviewRef }: { webviewRef: React.RefObje
       case "getPlatform":
         console.log("[IpcContainer] getPlatform called");
         sendPlatform({ webviewRef });
+        break;
+      case "postAppleLogin":
+        console.log("[IpcContainer] postAppleLogin called");
+        appleLogin();
         break;
     }
   }, [ipcMessage]);
