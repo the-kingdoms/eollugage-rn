@@ -1,5 +1,5 @@
-import IpcContainer from "@components/IpcContainer";
-import NotificationContainer from "@components/NotificationContainer";
+import IpcContainer from "@components/container/IpcContainer";
+import NotificationContainer from "@components/container/NotificationContainer";
 import onMessageHandler from "@components/ipc/onMessageHandler";
 import IpcMessageAtom from "datas/message";
 import { setThemeAtom, webviewStyleAtom } from "datas/style";
@@ -9,7 +9,7 @@ import { BackHandler, LayoutChangeEvent, SafeAreaView } from "react-native";
 import { URL } from "react-native-url-polyfill";
 import { WebView, WebViewNavigation } from "react-native-webview";
 
-const uri = "https://gage.eolluga.com";
+const uri = "http://172.16.101.50:3000";
 
 interface WebviewContainerProps {
   onLayout?: (event: LayoutChangeEvent) => void;
