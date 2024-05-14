@@ -1,22 +1,14 @@
 import { OnOpenNotification } from "@utils/_type";
-import {
-  buildAndroidNotification,
-  buildIOSNotification,
-} from "@utils/noti/default";
+import { buildAndroidNotification, buildIOSNotification } from "@utils/noti/default";
 import { Platform } from "react-native";
-import PushNotification, {
-  PushNotificationObject,
-} from "react-native-push-notification";
+import PushNotification, { PushNotificationObject } from "react-native-push-notification";
 import PushNotificationIOS from "@react-native-community/push-notification-ios";
 
 class LocalNotificationService {
   configure(onOpenNotification: OnOpenNotification) {
     PushNotification.configure({
       onRegister: function (token) {
-        console.log(
-          "[LocalNotificationService] onRegister : localtoken",
-          token
-        );
+        console.log("[LocalNotificationService] onRegister : localtoken", token);
       },
       onNotification: function (notification) {
         console.log("[LocalNotificationService] onNotification ", notification);
@@ -24,9 +16,7 @@ class LocalNotificationService {
           return;
         }
         notification.userInteraction = true;
-        onOpenNotification(
-          Platform.OS === "ios" ? notification.data.item : notification.data
-        );
+        onOpenNotification(Platform.OS === "ios" ? notification.data.item : notification.data);
         if (Platform.OS === "ios") {
           notification.finish(PushNotificationIOS.FetchResult.NoData);
         }
@@ -57,6 +47,7 @@ class LocalNotificationService {
       message: notify.message || "",
       playSound: notify.playSound || false,
       soundName: notify.soundName || "default",
+      channelId: "channel-id",
     };
     PushNotification.localNotification(noti);
   }
