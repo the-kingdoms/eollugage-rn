@@ -58,12 +58,7 @@ class FCMService {
     // FCM 메시지 수신 시
     this.messageListener = messageModule.onMessage((remoteMessage) => {
       if (remoteMessage) {
-        let notification = null;
-        if (Platform.OS === "ios") {
-          notification = remoteMessage?.data?.notification;
-        } else {
-          notification = remoteMessage.notification;
-        }
+        let notification = remoteMessage.notification;
         onNotification(notification);
       }
     });
