@@ -372,6 +372,7 @@
 					"FB_SONARKIT_ENABLED=1",
 				);
 				INFOPLIST_FILE = eollugarn/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "얼루가게";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -407,6 +408,7 @@
 				CODE_SIGN_ENTITLEMENTS = eollugarn/eollugarn.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = eollugarn/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "얼루가게";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
