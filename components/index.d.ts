@@ -1,4 +1,4 @@
 interface IpcMessage {
-  type: "getFcmToken" | "getPlatform" | "postAppleLogin" | "";
+  type: "getFcmToken" | "getPlatform" | "getAppleIdentifyToken" | "";
   data?: any;
 }

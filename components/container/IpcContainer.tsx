@@ -1,4 +1,5 @@
 import sendFcmToken from "@components/ipc/send/sendFcmToken";
+import sendIdentifyToken from "@components/ipc/send/sendIdentifyToken";
 import sendPlatform from "@components/ipc/send/sendPlatform";
 import appleLogin from "@components/lib/appleLogin";
 import fcmTokenAtom from "datas/fcmtoken";
@@ -21,9 +22,11 @@ export default function IpcContainer({ webviewRef }: { webviewRef: React.RefObje
         console.log("[IpcContainer] getPlatform called");
         sendPlatform({ webviewRef });
         break;
-      case "postAppleLogin":
-        console.log("[IpcContainer] postAppleLogin called");
-        appleLogin();
+      case "getAppleIdentifyToken":
+        console.log("[IpcContainer] getAppleIdentifyToken called");
+        appleLogin().then((identifyToken) => {
+          if (identifyToken) sendIdentifyToken({ webviewRef, token: identifyToken });
+        });
         break;
     }
   }, [ipcMessage]);
