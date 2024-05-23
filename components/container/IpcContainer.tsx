@@ -24,8 +24,8 @@ export default function IpcContainer({ webviewRef }: { webviewRef: React.RefObje
         break;
       case "getAppleIdentifyToken":
         console.log("[IpcContainer] getAppleIdentifyToken called");
-        appleLogin().then((identifyToken) => {
-          if (identifyToken) sendIdentifyToken({ webviewRef, token: identifyToken });
+        appleLogin().then(data => {
+          if (data) sendIdentifyToken({ webviewRef, data });
         });
         break;
     }

@@ -9,7 +9,7 @@ import { BackHandler, LayoutChangeEvent, SafeAreaView } from "react-native";
 import { URL } from "react-native-url-polyfill";
 import { WebView, WebViewNavigation } from "react-native-webview";
 
-const uri = "http://172.16.101.50:3000";
+const uri = "http://172.24.214.193:3000";
 
 interface WebviewContainerProps {
   onLayout?: (event: LayoutChangeEvent) => void;

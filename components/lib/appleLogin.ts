@@ -18,27 +18,21 @@ async function fetchAndUpdateCredentialState(updateCredentialStateForUser) {
 */
 
 export default async function appleLogin() {
-  console.log("Beginning Apple Authentication");
+  console.log("[AppleLogin] Beginning Apple Authentication");
 
   // start a login request
   try {
     const appleAuthRequestResponse = await appleAuth.performRequest({
       requestedOperation: appleAuth.Operation.LOGIN,
-      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
     });
 
-    console.log("appleAuthRequestResponse", appleAuthRequestResponse);
-
-    const { user: newUser, email, nonce, identityToken, realUserStatus } = appleAuthRequestResponse;
-
-    if (identityToken) {
-      // 백엔드 서버로 요청 보내기..?
-      // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
-      console.log(nonce, identityToken);
-    } else {
-      // 실패시?
-      // no token - failed sign-in?
+    const { identityToken, fullName } = appleAuthRequestResponse;
+    console.log("[AppleLogin] identityToken :", identityToken);
+    console.log("[AppleLogin] fullName :", fullName);
+    if (!identityToken) {
+      throw new Error("[AppleLogin] Apple Authentication failed - no identify token returned");
     }
+    return { token: identityToken, firstName: fullName?.familyName ?? "", lastName: fullName?.givenName ?? "" };
   } catch (error) {
     console.error(error);
   }

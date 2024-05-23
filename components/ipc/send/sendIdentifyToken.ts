@@ -2,11 +2,11 @@ import WebView from "react-native-webview";
 
 interface SendIdentifyTokenProps {
   webviewRef: React.RefObject<WebView<{}>>;
-  token: string;
+  data: { token: string; firstName: string; lastName: string };
 }
 
-function sendIdentifyToken({ webviewRef, token }: SendIdentifyTokenProps) {
-  const message: IpcMessage = { type: "getAppleIdentifyToken", data: token };
+function sendIdentifyToken({ webviewRef, data }: SendIdentifyTokenProps) {
+  const message: IpcMessage = { type: "getAppleIdentifyToken", data };
   webviewRef.current?.postMessage(JSON.stringify(message));
 }
 
