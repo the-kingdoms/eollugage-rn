@@ -9,7 +9,7 @@ import { BackHandler, LayoutChangeEvent, SafeAreaView } from "react-native";
 import { URL } from "react-native-url-polyfill";
 import { WebView, WebViewNavigation } from "react-native-webview";
 
-const uri = "http://172.24.214.193:3000";
+const uri = "https://gage.eolluga.com/";
 
 interface WebviewContainerProps {
   onLayout?: (event: LayoutChangeEvent) => void;
@@ -49,7 +49,7 @@ function WebviewContainer({ onLayout }: WebviewContainerProps) {
         ref={webviewRef}
         onNavigationStateChange={setWebviewNavigationState}
         source={{ uri }}
-        onMessage={(e) => onMessageHandler(e, setIpcMessageAtom)}
+        onMessage={e => onMessageHandler(e, setIpcMessageAtom)}
         allowsBackForwardNavigationGestures
       />
       <NotificationContainer />
