@@ -3,7 +3,7 @@
     "name": "얼루가게",
     "displayName": "얼루가게",
     "slug": "eolluga-rn",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "orientation": "portrait",
     "icon": "./assets/logo/eollugage/logo.png",
     "userInterfaceStyle": "light",
