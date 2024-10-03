@@ -2,9 +2,12 @@ import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import { PRESIGNED_URL_SERVER } from "@env";
 
-export type UploadResultT = "success" | "notSelect" | "fail";
+export interface ImageUploadResultT {
+  isSuccess: boolean;
+  reason: string;
+}
 
-export const uploadImage = async (): Promise<UploadResultT> => {
+export const uploadImage = async (): Promise<ImageUploadResultT> => {
   let result = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: ImagePicker.MediaTypeOptions.All,
     allowsEditing: true,
@@ -19,9 +22,9 @@ export const uploadImage = async (): Promise<UploadResultT> => {
     const presignedURL = await getPresignedUrl(fileFullName);
     const isUploadS3Success = await uploadImageOnS3(result.assets[0], presignedURL, fileFullName, fileExtension);
 
-    if (isUploadS3Success) return "success";
-    else return "fail";
-  } else return "notSelect";
+    if (isUploadS3Success) return { isSuccess: true, reason: "" };
+    else return { isSuccess: false, reason: "fail" };
+  } else return { isSuccess: false, reason: "notSelect" };
 };
 
 const getFileExtension = (imageName: string) => {
