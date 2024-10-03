@@ -1,6 +1,7 @@
 import sendFcmToken from "@components/ipc/send/sendFcmToken";
 import sendIdentifyToken from "@components/ipc/send/sendIdentifyToken";
 import sendPlatform from "@components/ipc/send/sendPlatform";
+import { uploadImage } from "@components/lib/accessGallery";
 import appleLogin from "@components/lib/appleLogin";
 import fcmTokenAtom from "datas/fcmtoken";
 import IpcMessageAtom from "datas/message";
@@ -26,6 +27,12 @@ export default function IpcContainer({ webviewRef }: { webviewRef: React.RefObje
         console.log("[IpcContainer] getAppleIdentifyToken called");
         appleLogin().then(data => {
           if (data) sendIdentifyToken({ webviewRef, data });
+        });
+        break;
+      case "accessGallery":
+        console.log("[IpcContainer] open gallery called");
+        uploadImage().then(result => {
+          console.log("upload image result:", result);
         });
         break;
     }
