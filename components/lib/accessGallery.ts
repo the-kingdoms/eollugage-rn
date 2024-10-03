@@ -1,6 +1,7 @@
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import { PRESIGNED_URL_SERVER } from "@env";
+import mime from "mime";
 
 export interface ImageUploadResultT {
   isSuccess: boolean;
@@ -57,7 +58,7 @@ const uploadImageOnS3 = async (
     const imageBlob = await fetchImage(image.uri);
     const response = await axios.put(presignedURL, imageBlob, {
       headers: {
-        "Content-Type": `image/${fileExtension}`,
+        "Content-Type": mime.getType(fileExtension),
       },
     });
 
