@@ -1,6 +1,6 @@
 {
   "name": "eollugage-rn",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start -c",
@@ -13,6 +13,7 @@
     "submit-ios": "eas submit --platform ios"
   },
   "dependencies": {
+    "@invertase/react-native-apple-authentication": "^2.3.0",
     "@react-native-clipboard/clipboard": "^1.13.2",
     "@react-native-community/push-notification-ios": "^1.11.0",
     "@react-native-firebase/app": "^18.8.0",

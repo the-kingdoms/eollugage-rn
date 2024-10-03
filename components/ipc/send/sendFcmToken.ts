@@ -6,7 +6,7 @@ interface SendFcmTokenProps {
 }
 
 function sendFcmToken({ webviewRef, token }: SendFcmTokenProps) {
-  const message: IpcMessage = { type: "getFcmTokenResponse", data: token };
+  const message: IpcMessage = { type: "getFcmToken", data: token };
   webviewRef.current?.postMessage(JSON.stringify(message));
 }
 
