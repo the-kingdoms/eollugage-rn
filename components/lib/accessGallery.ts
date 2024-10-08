@@ -14,23 +14,21 @@ export const uploadImage = async (): Promise<ImageUploadResultT> => {
     allowsEditing: true,
     aspect: [4, 3],
     quality: 1,
+    base64: true,
   });
 
   if (!result.canceled) {
-    const fileName = "tempImage"; // 추후 변경
-    const fileExtension = getFileExtension(result.assets[0].uri);
-    const fileFullName = `얼루가게/${fileName}.${fileExtension}`;
+    const image = result.assets[0];
+    if (image.base64 === undefined) return { isSuccess: false, reason: "base64 undifined" };
+
+    const fileName = image.uri.split("/").pop();
+    const fileFullName = `얼루가게/${fileName}`;
     const presignedURL = await getPresignedUrl(fileFullName);
-    const isUploadS3Success = await uploadImageOnS3(result.assets[0], presignedURL, fileFullName, fileExtension);
+    const isUploadS3Success = await uploadImageOnS3(result.assets[0], presignedURL, fileFullName);
 
     if (isUploadS3Success) return { isSuccess: true, reason: "" };
     else return { isSuccess: false, reason: "fail" };
   } else return { isSuccess: false, reason: "notSelect" };
-};
-
-const getFileExtension = (imageName: string) => {
-  const splitedImageName = imageName.split(".");
-  return splitedImageName[splitedImageName.length - 1];
 };
 
 const getPresignedUrl = async (fileFullName: string) => {
@@ -42,23 +40,14 @@ const getPresignedUrl = async (fileFullName: string) => {
   }
 };
 
-const fetchImage = async (uri: string) => {
-  const response = await fetch(uri);
-  const blob = await response.blob();
-  return blob;
-};
-
-const uploadImageOnS3 = async (
-  image: ImagePicker.ImagePickerAsset,
-  presignedURL: string,
-  fileFullName: string,
-  fileExtension: string,
-) => {
+const uploadImageOnS3 = async (image: ImagePicker.ImagePickerAsset, presignedURL: string, fileFullName: string) => {
   try {
-    const imageBlob = await fetchImage(image.uri);
-    const response = await axios.put(presignedURL, imageBlob, {
+    const Buffer = require("buffer").Buffer;
+    const buffer = Buffer.from(image.base64 ?? "", "base64");
+    const response = await axios.put(presignedURL, buffer, {
       headers: {
-        "Content-Type": mime.getType(fileExtension),
+        "Content-Type": mime.getType(fileFullName),
+        "Content-Encoding": "base64",
       },
     });
 
