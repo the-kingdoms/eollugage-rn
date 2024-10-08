@@ -9,30 +9,17 @@ import { BackHandler, LayoutChangeEvent, SafeAreaView } from "react-native";
 import { URL } from "react-native-url-polyfill";
 import { WebView, WebViewNavigation } from "react-native-webview";
 
-const uri = "https://gage.eolluga.com/";
-
 interface WebviewContainerProps {
   onLayout?: (event: LayoutChangeEvent) => void;
+  uri: string;
 }
 
-function WebviewContainer({ onLayout }: WebviewContainerProps) {
+function WebviewContainer({ onLayout, uri }: WebviewContainerProps) {
   const webviewRef = useRef<WebView>(null);
   const [webviewNavigationState, setWebviewNavigationState] = useState<WebViewNavigation | undefined>(undefined);
   const [webviewStyle] = useAtom(webviewStyleAtom);
   const [, setTheme] = useAtom(setThemeAtom);
   const [, setIpcMessageAtom] = useAtom(IpcMessageAtom);
-
-  useEffect(() => {
-    const backAction = () => {
-      if (webviewNavigationState?.canGoBack) {
-        webviewRef.current?.goBack();
-        return true;
-      }
-      return false;
-    };
-    BackHandler.addEventListener("hardwareBackPress", backAction);
-    return () => BackHandler.removeEventListener("hardwareBackPress", backAction);
-  }, [webviewNavigationState?.canGoBack]);
 
   useEffect(() => {
     if (webviewNavigationState?.url) {
@@ -51,8 +38,9 @@ function WebviewContainer({ onLayout }: WebviewContainerProps) {
         source={{ uri }}
         onMessage={e => onMessageHandler(e, setIpcMessageAtom)}
         allowsBackForwardNavigationGestures
+        bounces={false}
       />
-      <NotificationContainer />
+      {/* <NotificationContainer /> */}
       {webviewRef.current && <IpcContainer webviewRef={webviewRef} />}
     </SafeAreaView>
   );
