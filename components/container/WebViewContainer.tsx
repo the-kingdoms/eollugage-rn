@@ -24,7 +24,7 @@ function WebviewContainer({ onLayout, uri }: WebviewContainerProps) {
   useEffect(() => {
     if (webviewNavigationState?.url) {
       const url = new URL(webviewNavigationState.url);
-      if (url.pathname === "/") setTheme("dark");
+      if (url.pathname === "/" || url.pathname === "/home" || url.pathname === "/manage") setTheme("dark");
       else setTheme("light");
     }
   }, [webviewNavigationState]);

@@ -12,19 +12,11 @@ const styles = StyleSheet.create({
 
 function CustomStatusBar() {
   const [statusBarStyle] = useAtom(statusBarStyleAtom);
+
   return (
-    <View
-      style={[
-        styles.statusBar,
-        { backgroundColor: statusBarStyle.backgroundColor },
-      ]}
-    >
+    <View style={[styles.statusBar, { backgroundColor: statusBarStyle.backgroundColor }]}>
       <SafeAreaView>
-        <StatusBar
-          barStyle={statusBarStyle.barStyle}
-          backgroundColor={statusBarStyle.backgroundColor}
-          translucent
-        />
+        <StatusBar barStyle={statusBarStyle.barStyle} backgroundColor={statusBarStyle.backgroundColor} translucent />
       </SafeAreaView>
     </View>
   );
