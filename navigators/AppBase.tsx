@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import BottomTabNav from "./BottomTabMav";
+import BottomTabNav from "./BottomTabNav";
 import { useState } from "react";
 import * as SecureStore from "expo-secure-store";
 import JoinWebViewContainer from "pages/JoinWebViewContainer";
