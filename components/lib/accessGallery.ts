@@ -1,5 +1,4 @@
 import * as ImagePicker from "expo-image-picker";
-import axios from "axios";
 import { PRESIGNED_URL_SERVER } from "@env";
 import mime from "mime";
 
@@ -16,18 +15,16 @@ export const uploadImage = async (storeId: string): Promise<ImageUploadResultT> 
       allowsEditing: true,
       aspect: [3, 2],
       quality: 1,
-      base64: true,
     });
 
     if (!result.canceled) {
       const image = result.assets[0];
-      if (image.base64 === undefined) return { isSuccess: false, reason: "base64 undifined" };
-
       const fileName = image.uri.split("/").pop();
       const fileExtension = fileName?.split(".").pop();
       const fileFullName = `eollugage-store/${storeId}.${fileExtension}`;
+
       const presignedURL = await getPresignedUrl(fileFullName);
-      const isUploadS3Success = await uploadImageOnS3(result.assets[0], presignedURL, fileFullName);
+      const isUploadS3Success = await uploadImageOnS3(image, presignedURL, fileFullName);
 
       if (isUploadS3Success) return { isSuccess: true, fileFullName };
       else return { isSuccess: false, reason: "upload-fail" };
@@ -39,8 +36,12 @@ export const uploadImage = async (storeId: string): Promise<ImageUploadResultT> 
 
 const getPresignedUrl = async (fileFullName: string) => {
   try {
-    const res = await axios.post(PRESIGNED_URL_SERVER, { name: fileFullName, method: "put" });
-    return res.data.presigned_url;
+    const response = await fetch(PRESIGNED_URL_SERVER, {
+      method: "POST",
+      body: JSON.stringify({ name: fileFullName, method: "put" }),
+    });
+    const data = await response.json();
+    return data.presigned_url;
   } catch (error) {
     console.log("get presigned url error:", error);
   }
@@ -48,12 +49,13 @@ const getPresignedUrl = async (fileFullName: string) => {
 
 const uploadImageOnS3 = async (image: ImagePicker.ImagePickerAsset, presignedURL: string, fileFullName: string) => {
   try {
-    const Buffer = require("buffer").Buffer;
-    const buffer = Buffer.from(image.base64 ?? "", "base64");
-    const response = await axios.put(presignedURL, buffer, {
+    const imageObject = await fetch(image.uri);
+    const imageBlob = await imageObject.blob();
+    const response = await fetch(presignedURL, {
+      method: "PUT",
+      body: imageBlob,
       headers: {
-        "Content-Type": mime.getType(fileFullName),
-        "Content-Encoding": "base64",
+        "Content-Type": mime.getType(fileFullName) || "image",
       },
     });
 
