@@ -10,6 +10,7 @@ export interface ImageUploadResultT {
 }
 
 export const uploadImage = async (storeId: string): Promise<ImageUploadResultT> => {
+  try {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -31,6 +32,9 @@ export const uploadImage = async (storeId: string): Promise<ImageUploadResultT> 
       if (isUploadS3Success) return { isSuccess: true, fileFullName };
       else return { isSuccess: false, reason: "upload-fail" };
     } else return { isSuccess: false, reason: "not-select" };
+  } catch (error) {
+    return { isSuccess: false, reason: "presigned-url-error" };
+  }
 };
 
 const getPresignedUrl = async (fileFullName: string) => {
