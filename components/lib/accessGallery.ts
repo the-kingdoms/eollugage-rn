@@ -33,7 +33,7 @@ export const uploadImage = async (): Promise<ImageUploadResultT> => {
 
 const getPresignedUrl = async (fileFullName: string) => {
   try {
-    const res = await axios.post(PRESIGNED_URL_SERVER, { name: fileFullName });
+    const res = await axios.post(PRESIGNED_URL_SERVER, { name: fileFullName, method: "put" });
     return res.data.presigned_url;
   } catch (error) {
     console.log("get presigned url error:", error);
