@@ -5,30 +5,32 @@ import mime from "mime";
 
 export interface ImageUploadResultT {
   isSuccess: boolean;
-  reason: string;
+  reason?: string;
+  fileFullName?: string;
 }
 
-export const uploadImage = async (): Promise<ImageUploadResultT> => {
-  let result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.All,
-    allowsEditing: true,
-    aspect: [4, 3],
-    quality: 1,
-    base64: true,
-  });
+export const uploadImage = async (storeId: string): Promise<ImageUploadResultT> => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [3, 2],
+      quality: 1,
+      base64: true,
+    });
 
-  if (!result.canceled) {
-    const image = result.assets[0];
-    if (image.base64 === undefined) return { isSuccess: false, reason: "base64 undifined" };
+    if (!result.canceled) {
+      const image = result.assets[0];
+      if (image.base64 === undefined) return { isSuccess: false, reason: "base64 undifined" };
 
-    const fileName = image.uri.split("/").pop();
-    const fileFullName = `얼루가게/${fileName}`;
-    const presignedURL = await getPresignedUrl(fileFullName);
-    const isUploadS3Success = await uploadImageOnS3(result.assets[0], presignedURL, fileFullName);
+      const fileName = image.uri.split("/").pop();
+      const fileExtension = fileName?.split(".").pop();
+      const fileFullName = `eollugage-store/${storeId}.${fileExtension}`;
+      const presignedURL = await getPresignedUrl(fileFullName);
+      const isUploadS3Success = await uploadImageOnS3(result.assets[0], presignedURL, fileFullName);
 
-    if (isUploadS3Success) return { isSuccess: true, reason: "" };
-    else return { isSuccess: false, reason: "fail" };
-  } else return { isSuccess: false, reason: "notSelect" };
+      if (isUploadS3Success) return { isSuccess: true, fileFullName };
+      else return { isSuccess: false, reason: "upload-fail" };
+    } else return { isSuccess: false, reason: "not-select" };
 };
 
 const getPresignedUrl = async (fileFullName: string) => {
