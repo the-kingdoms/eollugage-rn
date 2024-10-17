@@ -1,5 +1,5 @@
-import WebView from "react-native-webview";
+import WebviewContainer from "@components/container/WebViewContainer";
 
 export default function JoinWebViewContainer() {
-  return <WebView source={{ uri: "http://localhost:3000" }} />;
+  return <WebviewContainer uri="http://localhost:3000" />;
 }
