@@ -1,5 +1,4 @@
 interface IpcMessage {
-  type: "getFcmToken" | "getPlatform" | "getAppleIdentifyToken" | "accessGallery" | "getImageUploadResult" | "";
   type:
     | "getFcmToken"
     | "getPlatform"
@@ -7,6 +6,7 @@ interface IpcMessage {
     | "accessGallery"
     | "getImageUploadResult"
     | "getLoginToken"
+    | "moveToHome"
     | "";
   data?: any;
 }
