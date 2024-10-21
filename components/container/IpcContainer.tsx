@@ -4,8 +4,6 @@ import sendImageUploadResult from "@components/ipc/send/sendImageUploadResult";
 import sendPlatform from "@components/ipc/send/sendPlatform";
 import { ImageUploadResultT, uploadImage } from "@components/lib/accessGallery";
 import appleLogin from "@components/lib/appleLogin";
-import { setLoginToken } from "@utils/handleLoginToken";
-import { moveSignAtom } from "datas/atoms";
 import fcmTokenAtom from "datas/fcmtoken";
 import IpcMessageAtom from "datas/message";
 import { useAtom } from "jotai";
@@ -13,7 +11,6 @@ import { useEffect } from "react";
 import WebView from "react-native-webview";
 
 export default function IpcContainer({ webviewRef }: { webviewRef: React.RefObject<WebView<{}>> }) {
-  const [, setMoveSign] = useAtom(moveSignAtom);
   const [ipcMessage] = useAtom(IpcMessageAtom);
   const [fcmToken] = useAtom(fcmTokenAtom);
   useEffect(() => {
@@ -40,17 +37,9 @@ export default function IpcContainer({ webviewRef }: { webviewRef: React.RefObje
           if (result) sendImageUploadResult({ webviewRef, data: result });
         });
         break;
-      case "getLoginToken":
-        console.log("[IpcContainer] getLoginToken called");
-        if (ipcMessage.data.result === "fail") console.log("fail to set login token");
-        else
-          setLoginToken(ipcMessage.data.token).then(() => {
-            console.log("successfully set login token");
-          });
-        break;
       case "moveToHome":
         console.log("[IpcContainer] moveToHome called");
-        setMoveSign(true);
+        break;
     }
   }, [ipcMessage]);
   return <></>;

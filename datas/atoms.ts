@@ -1,4 +1,4 @@
 import { atom } from "jotai";
 
-export const hasTokenAtom = atom<boolean | null>(null);
-export const moveSignAtom = atom<boolean>(false);
+export const pathnameAtom = atom<string>("");
+export const storeIdAtom = atom<string>("");

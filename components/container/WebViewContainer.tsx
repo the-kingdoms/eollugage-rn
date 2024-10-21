@@ -1,6 +1,7 @@
 import IpcContainer from "@components/container/IpcContainer";
 import NotificationContainer from "@components/container/NotificationContainer";
 import onMessageHandler from "@components/ipc/onMessageHandler";
+import { pathnameAtom } from "datas/atoms";
 import IpcMessageAtom from "datas/message";
 import { setThemeAtom, webviewStyleAtom } from "datas/style";
 import { useAtom } from "jotai";
@@ -20,10 +21,11 @@ function WebviewContainer({ onLayout, uri }: WebviewContainerProps) {
   const [webviewStyle] = useAtom(webviewStyleAtom);
   const [, setTheme] = useAtom(setThemeAtom);
   const [, setIpcMessageAtom] = useAtom(IpcMessageAtom);
-
+  const [, setPathname] = useAtom(pathnameAtom);
   useEffect(() => {
     if (webviewNavigationState?.url) {
       const url = new URL(webviewNavigationState.url);
+      setPathname(url.pathname);
       if (url.pathname === "/" || url.pathname === "/home" || url.pathname === "/manage") setTheme("dark");
       else setTheme("light");
     }
