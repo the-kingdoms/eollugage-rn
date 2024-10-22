@@ -5,7 +5,7 @@
     "slug": "eolluga-rn",
     "version": "1.2.1",
     "orientation": "portrait",
-    "icon": "./assets/logo.png",
+    "icon": "./assets/image/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "backgroundColor": "#000000"
@@ -22,12 +22,18 @@
     "android": {
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo.png",
+        "foregroundImage": "./assets/image/logo.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.eolluga.eollugage"
     },
     "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": ["./assets/font/Pretendard-Medium.otf"]
+        }
+      ],
       "@react-native-firebase/app",
       "@react-native-firebase/messaging",
       [

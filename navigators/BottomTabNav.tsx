@@ -5,6 +5,10 @@ import ManageNav from "./ManageNav";
 import MypageNav from "./MypageNav";
 import { useAtom } from "jotai";
 import { isTabVisibleAtom } from "datas/atoms";
+import HomeIcon from "../assets/image/home.svg";
+import ManageIcon from "../assets/image/people.svg";
+import MypageIcon from "../assets/image/person-outlined.svg";
+import styled from "styled-components/native";
 
 const Tabs = createBottomTabNavigator();
 
@@ -27,9 +31,53 @@ export default function BottomTabNav() {
         },
       }}
     >
-      <Tabs.Screen name="HomeNav" component={HomeNav} />
-      <Tabs.Screen name="ManageNav" component={ManageNav} />
-      <Tabs.Screen name="MyNav" component={MypageNav} />
+      <Tabs.Screen
+        name="HomeNav"
+        component={HomeNav}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <TabWrapper>
+              <HomeIcon width={24} height={24} color={focused ? "#262626" : "#6F6F6F"} />
+              <TabText style={{ color: focused ? "#161616" : "#6F6F6F" }}>홈</TabText>
+            </TabWrapper>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="ManageNav"
+        component={ManageNav}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <TabWrapper>
+              <ManageIcon width={24} height={24} color={focused ? "#262626" : "#6F6F6F"} />
+              <TabText style={{ color: focused ? "#161616" : "#6F6F6F" }}>근무 관리</TabText>
+            </TabWrapper>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="MyNav"
+        component={MypageNav}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <TabWrapper>
+              <MypageIcon width={24} height={24} color={focused ? "#262626" : "#6F6F6F"} />
+              <TabText style={{ color: focused ? "#161616" : "#6F6F6F" }}>마이</TabText>
+            </TabWrapper>
+          ),
+        }}
+      />
     </Tabs.Navigator>
   );
 }
+
+const TabWrapper = styled.View`
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding-top: 10px;
+`;
+const TabText = styled.Text`
+  font-size: 12px;
+  font-family: Medium;
+`;
