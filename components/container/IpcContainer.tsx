@@ -37,9 +37,6 @@ export default function IpcContainer({ webviewRef }: { webviewRef: React.RefObje
           if (result) sendImageUploadResult({ webviewRef, data: result });
         });
         break;
-      case "moveToHome":
-        console.log("[IpcContainer] moveToHome called");
-        break;
     }
   }, [ipcMessage]);
   return <></>;
