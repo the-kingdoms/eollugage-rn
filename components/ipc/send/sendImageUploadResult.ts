@@ -1,4 +1,4 @@
-import { ImageUploadResultT } from "@components/lib/accessGallery";
+import { ImageUploadResultT } from "@utils/accessGallery";
 import WebView from "react-native-webview";
 
 interface SendImageUploadResultProps {
