@@ -5,8 +5,7 @@ interface IpcMessage {
     | "getAppleIdentifyToken"
     | "accessGallery"
     | "getImageUploadResult"
-    | "getLoginToken"
-    | "moveToHome"
+    | "stackRouterBack"
     | "";
   data?: any;
 }

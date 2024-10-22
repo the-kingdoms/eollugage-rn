@@ -10,7 +10,11 @@ import { useAtom } from "jotai";
 import { useEffect } from "react";
 import WebView from "react-native-webview";
 
-export default function IpcContainer({ webviewRef }: { webviewRef: React.RefObject<WebView<{}>> }) {
+interface IpcContainerProps {
+  webviewRef: React.RefObject<WebView<{}>>;
+}
+
+export default function IpcContainer({ webviewRef }: IpcContainerProps) {
   const [ipcMessage] = useAtom(IpcMessageAtom);
   const [fcmToken] = useAtom(fcmTokenAtom);
   useEffect(() => {
