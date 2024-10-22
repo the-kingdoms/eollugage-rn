@@ -15,7 +15,6 @@ export default function App() {
       <NavigationContainer>
         <AppBase />
       </NavigationContainer>
-      {/* <WebviewContainer /> */}
     </Fragment>
   );
 }

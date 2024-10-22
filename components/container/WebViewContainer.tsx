@@ -42,7 +42,7 @@ function WebviewContainer({ onLayout, uri }: WebviewContainerProps) {
         allowsBackForwardNavigationGestures
         bounces={false}
       />
-      {/* <NotificationContainer /> */}
+      <NotificationContainer />
       {webviewRef.current && <IpcContainer webviewRef={webviewRef} />}
     </SafeAreaView>
   );
