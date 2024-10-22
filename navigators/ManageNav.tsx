@@ -2,6 +2,7 @@ import WebviewContainer from "@components/container/WebViewContainer";
 import { createStackNavigator } from "@react-navigation/stack";
 import { storeIdAtom } from "datas/atoms";
 import { useAtom } from "jotai";
+import { BASE_URL } from "@env";
 
 export default function ManageNav() {
   const Stack = createStackNavigator();
@@ -11,7 +12,7 @@ export default function ManageNav() {
     <Stack.Navigator>
       <Stack.Screen
         name="manage"
-        children={() => <WebviewContainer uri={`http://localhost:3000/${storeId}/manage`} />}
+        children={() => <WebviewContainer uri={`${BASE_URL}/${storeId}/manage`} />}
         options={{
           headerShown: false,
         }}
