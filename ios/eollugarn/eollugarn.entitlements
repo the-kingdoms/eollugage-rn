@@ -8,5 +8,9 @@
 	<array>
 		<string>Default</string>
 	</array>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:develop.d1zoq9pnc1288t.amplifyapp.com</string>
+	</array>
 </dict>
 </plist>

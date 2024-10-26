@@ -17,7 +17,8 @@
       "bundleIdentifier": "com.eolluga.eollugage",
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "associatedDomains": ["applinks:develop.d1zoq9pnc1288t.amplifyapp.com"]
     },
     "android": {
       "googleServicesFile": "./google-services.json",

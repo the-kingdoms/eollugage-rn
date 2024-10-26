@@ -54,6 +54,10 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAssociatedDomains</key>
+	<array>
+		<string>applinks:develop.d1zoq9pnc1288t.amplifyapp.com</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
