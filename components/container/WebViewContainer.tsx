@@ -27,6 +27,18 @@ function WebviewContainer({ onLayout, uri }: WebviewContainerProps) {
   const [bottomTabVisibility, setTabVisibility] = useAtom(isTabVisibleAtom);
 
   useEffect(() => {
+    const backAction = () => {
+      if (webviewNavigationState?.canGoBack) {
+        webviewRef.current?.goBack();
+        return true;
+      }
+      return false;
+    };
+    BackHandler.addEventListener("hardwareBackPress", backAction);
+    return () => BackHandler.removeEventListener("hardwareBackPress", backAction);
+  }, [webviewNavigationState?.canGoBack]);
+
+  useEffect(() => {
     if (webviewNavigationState?.url) {
       const url = new URL(webviewNavigationState.url);
       setBottomTabVisibility(url.pathname);
