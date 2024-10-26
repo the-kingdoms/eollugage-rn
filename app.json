@@ -26,15 +26,24 @@
         "foregroundImage": "./assets/image/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.eolluga.eollugage"
-    },
-    "plugins": [
-      [
-        "expo-font",
+      "package": "com.eolluga.eollugage",
+      "intentFilters": [
         {
-          "fonts": ["./assets/font/Pretendard-Medium.otf"]
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "*.eolluga.com",
+              "pathPrefix": "/"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
+      "permissions": ["android.permission.RECORD_AUDIO"]
+    },
+    "plugins": [
       "@react-native-firebase/app",
       "@react-native-firebase/messaging",
       [
