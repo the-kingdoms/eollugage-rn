@@ -32,7 +32,7 @@ export default function IpcContainer({ webviewRef }: { webviewRef: React.RefObje
         break;
       case "accessGallery":
         console.log("[IpcContainer] open gallery called");
-        uploadImage().then((result: ImageUploadResultT) => {
+        uploadImage(ipcMessage.data).then((result: ImageUploadResultT) => {
           console.log("upload image result:", result);
           if (result) sendImageUploadResult({ webviewRef, data: result });
         });

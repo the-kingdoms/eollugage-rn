@@ -1,6 +1,7 @@
 import IpcContainer from "@components/container/IpcContainer";
 import NotificationContainer from "@components/container/NotificationContainer";
 import onMessageHandler from "@components/ipc/onMessageHandler";
+import { pathnameAtom } from "datas/atoms";
 import IpcMessageAtom from "datas/message";
 import { setThemeAtom, webviewStyleAtom } from "datas/style";
 import { useAtom } from "jotai";
@@ -9,35 +10,23 @@ import { BackHandler, LayoutChangeEvent, SafeAreaView } from "react-native";
 import { URL } from "react-native-url-polyfill";
 import { WebView, WebViewNavigation } from "react-native-webview";
 
-const uri = "https://gage.eolluga.com/";
-
 interface WebviewContainerProps {
   onLayout?: (event: LayoutChangeEvent) => void;
+  uri: string;
 }
 
-function WebviewContainer({ onLayout }: WebviewContainerProps) {
+function WebviewContainer({ onLayout, uri }: WebviewContainerProps) {
   const webviewRef = useRef<WebView>(null);
   const [webviewNavigationState, setWebviewNavigationState] = useState<WebViewNavigation | undefined>(undefined);
   const [webviewStyle] = useAtom(webviewStyleAtom);
   const [, setTheme] = useAtom(setThemeAtom);
   const [, setIpcMessageAtom] = useAtom(IpcMessageAtom);
-
-  useEffect(() => {
-    const backAction = () => {
-      if (webviewNavigationState?.canGoBack) {
-        webviewRef.current?.goBack();
-        return true;
-      }
-      return false;
-    };
-    BackHandler.addEventListener("hardwareBackPress", backAction);
-    return () => BackHandler.removeEventListener("hardwareBackPress", backAction);
-  }, [webviewNavigationState?.canGoBack]);
-
+  const [, setPathname] = useAtom(pathnameAtom);
   useEffect(() => {
     if (webviewNavigationState?.url) {
       const url = new URL(webviewNavigationState.url);
-      if (url.pathname === "/") setTheme("dark");
+      setPathname(url.pathname);
+      if (url.pathname === "/" || url.pathname === "/home" || url.pathname === "/manage") setTheme("dark");
       else setTheme("light");
     }
   }, [webviewNavigationState]);
@@ -51,6 +40,7 @@ function WebviewContainer({ onLayout }: WebviewContainerProps) {
         source={{ uri }}
         onMessage={e => onMessageHandler(e, setIpcMessageAtom)}
         allowsBackForwardNavigationGestures
+        bounces={false}
       />
       <NotificationContainer />
       {webviewRef.current && <IpcContainer webviewRef={webviewRef} />}

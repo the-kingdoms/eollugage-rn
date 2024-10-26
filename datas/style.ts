@@ -9,7 +9,7 @@ interface StatusBarStyle {
   backgroundColor: string;
 }
 const statusBarStyleAtom = atom<StatusBarStyle>({
-  barStyle: "dark-content",
+  barStyle: "light-content",
   backgroundColor: "black",
 });
 
