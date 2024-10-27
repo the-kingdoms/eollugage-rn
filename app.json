@@ -8,11 +8,11 @@
     "userInterfaceStyle": "light",
     "scheme": "eollugage",
     "splash": {
-      "backgroundColor": "#000000"
+      "backgroundColor": "#000000",
+      "resizeMode": "cover",
+      "image": "./assets/image/splash.png"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "googleServicesFile": "./GoogleService-Info.plist",
@@ -20,9 +20,7 @@
       "config": {
         "usesNonExemptEncryption": false
       },
-      "associatedDomains": [
-        "applinks:gage.eolluga.com"
-      ]
+      "associatedDomains": ["applinks:gage.eolluga.com"]
     },
     "android": {
       "googleServicesFile": "./google-services.json",
@@ -42,15 +40,10 @@
               "pathPrefix": "/"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ]
+      "permissions": ["android.permission.RECORD_AUDIO"]
     },
     "plugins": [
       "@react-native-firebase/app",
