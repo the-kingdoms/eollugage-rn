@@ -10,7 +10,15 @@ import ManageIcon from "../assets/image/people.svg";
 import MypageIcon from "../assets/image/person-outlined.svg";
 import styled from "styled-components/native";
 
-const Tabs = createBottomTabNavigator();
+export type BottomTabNavProps = {
+  HomeNav: undefined;
+  ManageNav: {
+    storeId?: string;
+  };
+  MypageNav: undefined;
+};
+
+const Tabs = createBottomTabNavigator<BottomTabNavProps>();
 
 export default function BottomTabNav() {
   const [isTabVisible] = useAtom(isTabVisibleAtom);
@@ -56,7 +64,7 @@ export default function BottomTabNav() {
         }}
       />
       <Tabs.Screen
-        name="MyNav"
+        name="MypageNav"
         component={MypageNav}
         options={{
           tabBarIcon: ({ focused }) => (

@@ -5,11 +5,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import AppBase from "navigators/AppBase";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { View } from "react-native";
+import { Text, View } from "react-native";
+import * as Linking from "expo-linking";
 
 if (__DEV__) {
   require("./ReactotronConfig");
 }
+
+const prefix = Linking.createURL("/");
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
@@ -25,10 +28,19 @@ export default function App() {
     return null;
   }
 
+  const linking = {
+    prefixes: [prefix],
+    config: {
+      screens: {
+        ManageNav: "manage/:storeId",
+      },
+    },
+  };
+
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <CustomStatusBar />
-      <NavigationContainer>
+      <NavigationContainer linking={linking} fallback={<Text>로딩 중..</Text>}>
         <AppBase />
       </NavigationContainer>
     </View>

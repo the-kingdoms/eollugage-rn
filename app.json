@@ -7,6 +7,7 @@
     "orientation": "portrait",
     "icon": "./assets/image/logo.png",
     "userInterfaceStyle": "light",
+    "scheme": "eollugage",
     "splash": {
       "backgroundColor": "#000000"
     },

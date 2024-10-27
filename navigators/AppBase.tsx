@@ -10,6 +10,7 @@ export default function AppBase() {
 
   const currentStoreId = getStoreId(pathname);
   console.log("currentStoreId:", currentStoreId);
+
   if (currentStoreId.length > 0 && currentStoreId !== "join") {
     setStoreId(currentStoreId);
     return <BottomTabNav />;
