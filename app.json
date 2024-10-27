@@ -19,7 +19,7 @@
       "config": {
         "usesNonExemptEncryption": false
       },
-      "associatedDomains": ["applinks:develop.d1zoq9pnc1288t.amplifyapp.com"]
+      "associatedDomains": ["applinks:gage.eolluga.com"]
     },
     "android": {
       "googleServicesFile": "./google-services.json",
