@@ -10,7 +10,7 @@ type ManageNavProps = BottomTabScreenProps<BottomTabNavProps, "ManageNav">;
 
 const Stack = createStackNavigator();
 export default function ManageNav({ navigation, route }: ManageNavProps) {
-  const isFromQR = route.params.storeId ? true : false;
+  const isFromQR = route.params?.storeId ? true : false;
   const [storeId] = useAtom(storeIdAtom);
 
   return (
