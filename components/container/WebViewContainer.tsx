@@ -65,6 +65,8 @@ function WebviewContainer({ onLayout, uri }: WebviewContainerProps) {
         onMessage={e => onMessageHandler(e, setIpcMessageAtom)}
         allowsBackForwardNavigationGestures
         bounces={false}
+        cacheEnabled
+        startInLoadingState
       />
       <NotificationContainer />
       {webviewRef.current && <IpcContainer webviewRef={webviewRef} />}
