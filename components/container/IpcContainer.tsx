@@ -1,9 +1,16 @@
 import sendFcmToken from "@components/ipc/send/sendFcmToken";
 import sendIdentifyToken from "@components/ipc/send/sendIdentifyToken";
 import sendImageUploadResult from "@components/ipc/send/sendImageUploadResult";
+import sendLoginToken from "@components/ipc/send/sendLoginToken";
 import sendPlatform from "@components/ipc/send/sendPlatform";
 import { ImageUploadResultT, uploadImage } from "@utils/accessGallery";
 import appleLogin from "@utils/appleLogin";
+import {
+  LoginTokenResult,
+  deleteLoginTokenFromStore,
+  getLoginTokenFromStore,
+  setLoginTokenFromStore,
+} from "@utils/loginToken";
 import fcmTokenAtom from "datas/fcmtoken";
 import IpcMessageAtom from "datas/message";
 import { useAtom } from "jotai";
@@ -37,10 +44,28 @@ export default function IpcContainer({ webviewRef }: IpcContainerProps) {
       case "accessGallery":
         console.log("[IpcContainer] open gallery called");
         uploadImage(ipcMessage.data).then((result: ImageUploadResultT) => {
-          console.log("upload image result:", result);
+          console.log("[IpcContainer] upload image result:", result);
           if (result) sendImageUploadResult({ webviewRef, data: result });
         });
         break;
+      case "getLoginToken":
+        console.log("[IpcContainer] getLoginToken called");
+        getLoginTokenFromStore("access_token").then((result: LoginTokenResult) => {
+          console.log("[IpcContainer] getLoginToken result:", result);
+          if (result) sendLoginToken({ webviewRef, data: result });
+        });
+        break;
+      case "setLoginToken":
+        console.log("[IpcContainer] setLoginToken called");
+        setLoginTokenFromStore("access_token", ipcMessage.data).then(() => {
+          console.log("successfully set access_token:", ipcMessage.data);
+        });
+        break;
+      case "deleteLoginToken":
+        console.log("[IpcContainer] deleteLoginToken called");
+        deleteLoginTokenFromStore("access_token").then(() => {
+          console.log("successfully delete access_token:");
+        });
     }
   }, [ipcMessage]);
   return <></>;
