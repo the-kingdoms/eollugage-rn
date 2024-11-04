@@ -44,7 +44,7 @@ export default function IpcContainer({ webviewRef }: IpcContainerProps) {
       case "accessGallery":
         console.log("[IpcContainer] open gallery called");
         uploadImage(ipcMessage.data).then((result: ImageUploadResultT) => {
-          console.log("[IpcContainer] upload image result:", result);
+          console.log("[IpcContainer] upload image result:", new Date().toTimeString(), result);
           if (result) sendImageUploadResult({ webviewRef, data: result });
         });
         break;
