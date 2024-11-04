@@ -8,10 +8,9 @@ import { useEffect, useState } from "react";
 export default function AppBase() {
   const [pathname] = useAtom(pathnameAtom);
   const [storeId, setStoreId] = useAtom(storeIdAtom);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const currentStoreId = getStoreId(pathname);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  console.log("currentStoreId:", currentStoreId);
 
   useEffect(() => {
     if (storeId !== currentStoreId) setStoreId(currentStoreId);
