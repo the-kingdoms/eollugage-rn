@@ -66,6 +66,7 @@ function WebviewContainer({ onLayout, uri }: WebviewContainerProps) {
         allowsBackForwardNavigationGestures
         bounces={false}
         cacheEnabled
+        webviewDebuggingEnabled
         startInLoadingState
       />
       <NotificationContainer />
