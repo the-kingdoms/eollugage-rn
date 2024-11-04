@@ -7,6 +7,7 @@ interface IpcMessage {
     | "getPlatform"
     | "getAppleIdentifyToken"
     | "accessGallery"
+    | "getImageUploadResult"
     | "";
   data?: any;
 }
