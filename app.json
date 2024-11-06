@@ -1,14 +1,16 @@
 {
   "expo": {
     "name": "얼루가게",
-    "displayName": "얼루가게",
     "slug": "eolluga-rn",
-    "version": "1.2.1",
+    "version": "2.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo.png",
+    "icon": "./assets/image/logo.png",
     "userInterfaceStyle": "light",
+    "scheme": "eollugage",
     "splash": {
-      "backgroundColor": "#000000"
+      "backgroundColor": "#000000",
+      "resizeMode": "cover",
+      "image": "./assets/image/splash.png"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -17,15 +19,31 @@
       "bundleIdentifier": "com.eolluga.eollugage",
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "associatedDomains": ["applinks:gage.eolluga.com"]
     },
     "android": {
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo.png",
+        "foregroundImage": "./assets/image/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.eolluga.eollugage"
+      "package": "com.eolluga.eollugage",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "*.eolluga.com",
+              "pathPrefix": "/"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
+      "permissions": ["android.permission.RECORD_AUDIO"]
     },
     "plugins": [
       "@react-native-firebase/app",

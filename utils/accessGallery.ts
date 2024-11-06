@@ -36,10 +36,7 @@ export const uploadImage = async (storeId: string): Promise<ImageUploadResultT> 
 
 const getPresignedUrl = async (fileFullName: string) => {
   try {
-    const response = await fetch(PRESIGNED_URL_SERVER, {
-      method: "POST",
-      body: JSON.stringify({ name: fileFullName, method: "put" }),
-    });
+    const response = await fetch(`${PRESIGNED_URL_SERVER}?name=${fileFullName}&method=put`, { method: "GET" });
     const data = await response.json();
     return data.presigned_url;
   } catch (error) {
