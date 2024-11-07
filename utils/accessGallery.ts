@@ -11,7 +11,7 @@ export interface ImageUploadResultT {
 export const uploadImage = async (storeId: string): Promise<ImageUploadResultT> => {
   try {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [3, 2],
       quality: 1,
