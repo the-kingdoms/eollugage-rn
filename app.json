@@ -6,6 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/image/logo.png",
     "userInterfaceStyle": "light",
+    "notification": {
+      "icon": "./assets/image/logo.png"
+    },
     "scheme": "eollugage",
     "splash": {
       "backgroundColor": "#000000",
