@@ -22,7 +22,7 @@ interface IpcContainerProps {
 }
 
 export default function IpcContainer({ webviewRef }: IpcContainerProps) {
-  const [ipcMessage] = useAtom(IpcMessageAtom);
+  const [ipcMessage, setIpcMessage] = useAtom(IpcMessageAtom);
   const [fcmToken] = useAtom(fcmTokenAtom);
   useEffect(() => {
     switch (ipcMessage.type) {
@@ -46,6 +46,7 @@ export default function IpcContainer({ webviewRef }: IpcContainerProps) {
         uploadImage(ipcMessage.data).then((result: ImageUploadResultT) => {
           console.log("[IpcContainer] upload image result:", new Date().toTimeString(), result);
           if (result) sendImageUploadResult({ webviewRef, data: result });
+          setIpcMessage({ type: "" });
         });
         break;
       case "getLoginToken":
