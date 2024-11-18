@@ -14,9 +14,9 @@ export default function ManageNav({ navigation, route }: ManageNavProps) {
   const { params } = route;
   const [storeId] = useAtom(storeIdAtom);
 
-  const isFromQR = params.storeId === storeId ? true : false;
-  if (params.storeId !== storeId)
-    Alert.alert("출퇴근 안내", "로그인된 가게와 링크 가게가 달라서 출퇴근 불가능", [
+  const isFromQR = params?.storeId && params?.storeId === storeId ? true : false;
+  if (params?.storeId && params?.storeId !== storeId)
+    Alert.alert("근무 매장을 확인해주세요", "소속된 가게의 QR이 아니라서 출퇴근이 불가합니다.", [
       {
         text: "확인",
       },
