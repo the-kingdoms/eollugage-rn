@@ -21,7 +21,7 @@ export const uploadImage = async (storeId: string): Promise<ImageUploadResultT> 
       const image = result.assets[0];
       const fileName = image.uri.split("/").pop();
       const fileExtension = fileName?.split(".").pop();
-      const fileFullName = `eollugage-store/${storeId}.${fileExtension}`;
+      const fileFullName = `eollugage-store/temp/${storeId}.${fileExtension}`;
 
       const presignedURL = await getPresignedUrl(fileFullName);
       const isUploadS3Success = await uploadImageOnS3(image, presignedURL, fileFullName);
