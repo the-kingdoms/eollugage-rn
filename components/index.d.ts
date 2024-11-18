@@ -8,6 +8,7 @@ interface IpcMessage {
     | "getAppleIdentifyToken"
     | "accessGallery"
     | "getImageUploadResult"
+    | "openKakaoInquire"
     | "";
   data?: any;
 }

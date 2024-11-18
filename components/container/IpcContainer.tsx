@@ -15,6 +15,7 @@ import fcmTokenAtom from "datas/fcmtoken";
 import IpcMessageAtom from "datas/message";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
+import { Linking } from "react-native";
 import WebView from "react-native-webview";
 
 interface IpcContainerProps {
@@ -67,6 +68,9 @@ export default function IpcContainer({ webviewRef }: IpcContainerProps) {
         deleteLoginTokenFromStore("access_token").then(() => {
           console.log("successfully delete access_token:");
         });
+      case "openKakaoInquire":
+        Linking.openURL("https://pf.kakao.com/_gxmxoIn/chat");
+        break;
     }
   }, [ipcMessage]);
   return <></>;
