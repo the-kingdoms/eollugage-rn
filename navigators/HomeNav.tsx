@@ -4,8 +4,9 @@ import { storeIdAtom } from "datas/atoms";
 import { useAtom } from "jotai";
 import { BASE_URL } from "@env";
 
+const Stack = createStackNavigator();
+
 export default function HomeNav() {
-  const Stack = createStackNavigator();
   const [storeId] = useAtom(storeIdAtom);
 
   return (
