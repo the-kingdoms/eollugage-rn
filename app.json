@@ -38,7 +38,7 @@
             {
               "scheme": "https",
               "host": "*.eolluga.com",
-              "pathPrefix": "/"
+              "pathPrefix": "/[a-zA-Z0-9_-]+/work"
             }
           ],
           "category": ["BROWSABLE", "DEFAULT"]
