@@ -11,9 +11,7 @@
     },
     "scheme": "eollugage",
     "splash": {
-      "backgroundColor": "#000000",
-      "resizeMode": "cover",
-      "image": "./assets/image/splash.png"
+      "backgroundColor": "#000000"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
