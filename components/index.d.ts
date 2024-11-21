@@ -10,6 +10,7 @@ interface IpcMessage {
     | "getImageUploadResult"
     | "getAppInfo"
     | "openKakaoInquire"
+    | "setStatusbarStyle"
     | "";
   data?: any;
 }

@@ -13,6 +13,7 @@ import {
   getLoginTokenFromStore,
   setLoginTokenFromStore,
 } from "@utils/loginToken";
+import { statusbarAtom } from "datas/atoms";
 import fcmTokenAtom from "datas/fcmtoken";
 import IpcMessageAtom from "datas/message";
 import { useAtom } from "jotai";
@@ -28,6 +29,7 @@ interface IpcContainerProps {
 export default function IpcContainer({ webviewRef }: IpcContainerProps) {
   const [ipcMessage, setIpcMessage] = useAtom(IpcMessageAtom);
   const [fcmToken] = useAtom(fcmTokenAtom);
+  const [, setStatusbarStyle] = useAtom(statusbarAtom);
 
   const { navigate } = useNavigation<StackNavigationProp<MyPageNavProps, "Mypage">>();
 
@@ -81,6 +83,9 @@ export default function IpcContainer({ webviewRef }: IpcContainerProps) {
       case "openKakaoInquire":
         Linking.openURL("https://pf.kakao.com/_gxmxoIn/chat");
         break;
+      case "setStatusbarStyle":
+        console.log("[IpcContainer] setStatusbarStyle called");
+        if (ipcMessage.data) setStatusbarStyle(ipcMessage.data);
     }
   }, [ipcMessage]);
   return <></>;
