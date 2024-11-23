@@ -5,13 +5,22 @@ import { useAtom } from "jotai";
 import { BASE_URL } from "@env";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { BottomTabNavProps } from "./BottomTabNav";
+import { Alert } from "react-native";
 
 type ManageNavProps = BottomTabScreenProps<BottomTabNavProps, "ManageNav">;
 
 const Stack = createStackNavigator();
 export default function ManageNav({ navigation, route }: ManageNavProps) {
-  const isFromQR = route.params?.storeId ? true : false;
+  const { params } = route;
   const [storeId] = useAtom(storeIdAtom);
+
+  const isFromQR = params?.storeId && params?.storeId === storeId ? true : false;
+  if (params?.storeId && params?.storeId !== storeId)
+    Alert.alert("근무 매장을 확인해주세요", "소속된 가게의 QR이 아니라서 출퇴근이 불가합니다.", [
+      {
+        text: "확인",
+      },
+    ]);
 
   return (
     <Stack.Navigator>

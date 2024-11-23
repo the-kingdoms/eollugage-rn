@@ -3,6 +3,8 @@ import sendIdentifyToken from "@components/ipc/send/sendIdentifyToken";
 import sendImageUploadResult from "@components/ipc/send/sendImageUploadResult";
 import sendLoginToken from "@components/ipc/send/sendLoginToken";
 import sendPlatform from "@components/ipc/send/sendPlatform";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { ImageUploadResultT, uploadImage } from "@utils/accessGallery";
 import appleLogin from "@utils/appleLogin";
 import {
@@ -14,7 +16,9 @@ import {
 import fcmTokenAtom from "datas/fcmtoken";
 import IpcMessageAtom from "datas/message";
 import { useAtom } from "jotai";
+import { MyPageNavProps } from "navigators/MypageNav";
 import { useEffect } from "react";
+import { Linking } from "react-native";
 import WebView from "react-native-webview";
 
 interface IpcContainerProps {
@@ -22,8 +26,11 @@ interface IpcContainerProps {
 }
 
 export default function IpcContainer({ webviewRef }: IpcContainerProps) {
-  const [ipcMessage] = useAtom(IpcMessageAtom);
+  const [ipcMessage, setIpcMessage] = useAtom(IpcMessageAtom);
   const [fcmToken] = useAtom(fcmTokenAtom);
+
+  const { navigate } = useNavigation<StackNavigationProp<MyPageNavProps, "Mypage">>();
+
   useEffect(() => {
     switch (ipcMessage.type) {
       case "getFcmToken":
@@ -46,6 +53,7 @@ export default function IpcContainer({ webviewRef }: IpcContainerProps) {
         uploadImage(ipcMessage.data).then((result: ImageUploadResultT) => {
           console.log("[IpcContainer] upload image result:", new Date().toTimeString(), result);
           if (result) sendImageUploadResult({ webviewRef, data: result });
+          setIpcMessage({ type: "" });
         });
         break;
       case "getLoginToken":
@@ -66,6 +74,13 @@ export default function IpcContainer({ webviewRef }: IpcContainerProps) {
         deleteLoginTokenFromStore("access_token").then(() => {
           console.log("successfully delete access_token:");
         });
+        break;
+      case "getAppInfo":
+        navigate("Info");
+        break;
+      case "openKakaoInquire":
+        Linking.openURL("https://pf.kakao.com/_gxmxoIn/chat");
+        break;
     }
   }, [ipcMessage]);
   return <></>;

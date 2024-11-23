@@ -41,11 +41,10 @@ function WebviewContainer({ onLayout, uri }: WebviewContainerProps) {
   useEffect(() => {
     if (webviewNavigationState?.url) {
       const url = new URL(webviewNavigationState.url);
-      setBottomTabVisibility(url.pathname);
 
+      if (url.pathname !== "/") setTheme("light");
+      setBottomTabVisibility(url.pathname);
       setPathname(url.pathname);
-      if (url.pathname === "/" || url.pathname === "/home" || url.pathname === "/manage") setTheme("dark");
-      else setTheme("light");
     }
   }, [webviewNavigationState]);
 

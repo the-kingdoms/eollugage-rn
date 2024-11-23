@@ -17,6 +17,7 @@ const prefix = Linking.createURL("/");
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
     Medium: require("./assets/font/Pretendard-Medium.otf"),
+    Regular: require("./assets/font/Pretendard-Regular.otf"),
   });
 
   const onLayoutRootView = useCallback(async () => {
