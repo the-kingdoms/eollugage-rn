@@ -19,6 +19,8 @@ export default function App() {
   const [fontsLoaded, fontError] = useFonts({
     Medium: require("./assets/font/Pretendard-Medium.otf"),
     Regular: require("./assets/font/Pretendard-Regular.otf"),
+    Bold: require("./assets/font/Pretendard-Bold.otf"),
+    SCDream: require("./assets/font/SCDream-Bold.otf"),
   });
 
   const onLayoutRootView = useCallback(async () => {
