@@ -7,6 +7,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { Text, View } from "react-native";
 import * as Linking from "expo-linking";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 if (__DEV__) {
   require("./ReactotronConfig");
@@ -39,11 +40,13 @@ export default function App() {
   };
 
   return (
-    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <CustomStatusBar />
-      <NavigationContainer linking={linking} fallback={<Text>로딩 중..</Text>}>
-        <AppBase />
-      </NavigationContainer>
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView onLayout={onLayoutRootView} style={{ flex: 1 }} edges={[]}>
+        <CustomStatusBar />
+        <NavigationContainer linking={linking} fallback={<Text>로딩 중..</Text>}>
+          <AppBase />
+        </NavigationContainer>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }

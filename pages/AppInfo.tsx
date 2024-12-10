@@ -55,6 +55,7 @@ const ImageContainer = styled.View`
   border-radius: 12px;
   margin-bottom: 16px;
   overflow: visible;
+  background-color: white;
 `;
 const AppIcon = styled.Image`
   width: 80px;
