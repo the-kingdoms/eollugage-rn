@@ -3,8 +3,16 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { storeIdAtom } from "datas/atoms";
 import { useAtom } from "jotai";
 import { BASE_URL } from "@env";
+import ImageUploadPage from "pages/ImageUploadPage";
 
-const Stack = createStackNavigator();
+export type HomeNavProps = {
+  home: undefined;
+  imageUpload: {
+    storeId: string;
+  };
+};
+
+const Stack = createStackNavigator<HomeNavProps>();
 
 export default function HomeNav() {
   const [storeId] = useAtom(storeIdAtom);
@@ -18,6 +26,7 @@ export default function HomeNav() {
           headerShown: false,
         }}
       />
+      <Stack.Screen name="imageUpload" component={ImageUploadPage} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

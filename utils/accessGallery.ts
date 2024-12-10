@@ -8,29 +8,30 @@ export interface ImageUploadResultT {
   fileFullName?: string;
 }
 
-export const uploadImage = async (storeId: string): Promise<ImageUploadResultT> => {
+export const openGallery = async (): Promise<ImagePicker.ImagePickerResult> => {
+  let result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing: true,
+    aspect: [3, 2],
+    quality: 1,
+  });
+
+  return result;
+};
+
+export const uploadImage = async (storeId: string, imageInfo: ImagePicker.ImagePickerAsset): Promise<boolean> => {
   try {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [3, 2],
-      quality: 1,
-    });
+    const fileName = imageInfo.uri.split("/").pop();
+    const fileExtension = fileName?.split(".").pop();
+    const fileFullName = `eollugage-store/${storeId}.${fileExtension}`;
 
-    if (!result.canceled) {
-      const image = result.assets[0];
-      const fileName = image.uri.split("/").pop();
-      const fileExtension = fileName?.split(".").pop();
-      const fileFullName = `eollugage-store/temp/${storeId}.${fileExtension}`;
+    const presignedURL = await getPresignedUrl(fileFullName);
+    const isUploadS3Success = await uploadImageOnS3(imageInfo, presignedURL, fileFullName);
 
-      const presignedURL = await getPresignedUrl(fileFullName);
-      const isUploadS3Success = await uploadImageOnS3(image, presignedURL, fileFullName);
-
-      if (isUploadS3Success) return { isSuccess: true, fileFullName };
-      else return { isSuccess: false, reason: "upload-fail" };
-    } else return { isSuccess: false, reason: "not-select" };
+    if (isUploadS3Success) return true;
+    else return true;
   } catch (error) {
-    return { isSuccess: false, reason: "presigned-url-error" };
+    return false;
   }
 };
 
