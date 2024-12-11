@@ -13,7 +13,7 @@ import {
   getLoginTokenFromStore,
   setLoginTokenFromStore,
 } from "@utils/loginToken";
-import { statusbarAtom } from "datas/atoms";
+import { safeAreaAtom, statusbarAtom } from "datas/atoms";
 import fcmTokenAtom from "datas/fcmtoken";
 import IpcMessageAtom from "datas/message";
 import { useAtom } from "jotai";
@@ -31,6 +31,7 @@ export default function IpcContainer({ webviewRef }: IpcContainerProps) {
   const [ipcMessage, setIpcMessage] = useAtom(IpcMessageAtom);
   const [fcmToken] = useAtom(fcmTokenAtom);
   const [, setStatusbarStyle] = useAtom(statusbarAtom);
+  const [, setSafeArea] = useAtom(safeAreaAtom);
 
   const { navigate: homeNavigate } = useNavigation<StackNavigationProp<HomeNavProps, "home">>();
   const { navigate: mypageNavigate } = useNavigation<StackNavigationProp<MyPageNavProps, "Mypage">>();
@@ -84,6 +85,10 @@ export default function IpcContainer({ webviewRef }: IpcContainerProps) {
       case "setStatusbarStyle":
         console.log("[IpcContainer] setStatusbarStyle called");
         if (ipcMessage.data) setStatusbarStyle(ipcMessage.data);
+        break;
+      case "setSafeAreaEdges":
+        console.log("[IpcContainer] setSafeAreaEdges called");
+        if (ipcMessage.data) setSafeArea(ipcMessage.data);
     }
   }, [ipcMessage]);
   return <></>;

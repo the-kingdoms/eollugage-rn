@@ -9,7 +9,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { HomeNavProps } from "navigators/HomeNav";
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
 import { useAtom } from "jotai";
-import { isTabVisibleAtom, statusbarAtom } from "datas/atoms";
+import { isTabVisibleAtom, safeAreaAtom, statusbarAtom } from "datas/atoms";
 import PopupModal from "@components/PopupModal";
 
 type ImageUploadPageProps = StackScreenProps<HomeNavProps, "imageUpload">;
@@ -18,6 +18,7 @@ export default function ImageUploadPage({ route }: ImageUploadPageProps) {
   const storeId = route.params.storeId;
   const from = route.params.from;
 
+  const [, setSafeArea] = useAtom(safeAreaAtom);
   const [, setIsTabVisible] = useAtom(isTabVisibleAtom);
   const [, setStatusbarStyle] = useAtom(statusbarAtom);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -69,12 +70,14 @@ export default function ImageUploadPage({ route }: ImageUploadPageProps) {
 
   useFocusEffect(
     useCallback(() => {
+      setSafeArea(["bottom"]);
       setIsTabVisible(false);
       setStatusbarStyle({ color: "#FFF", style: "dark" });
 
       return () => {
         setStatusbarStyle({ color: "#000", style: "light" });
         setIsTabVisible(true);
+        setSafeArea([]);
       };
     }, []),
   );

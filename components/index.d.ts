@@ -11,6 +11,7 @@ interface IpcMessage {
     | "getAppInfo"
     | "openKakaoInquire"
     | "setStatusbarStyle"
+    | "setSafeAreaEdges"
     | "";
   data?: any;
 }

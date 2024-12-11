@@ -8,6 +8,8 @@ import * as SplashScreen from "expo-splash-screen";
 import { Text, View } from "react-native";
 import * as Linking from "expo-linking";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { useAtom } from "jotai";
+import { safeAreaAtom } from "datas/atoms";
 
 if (__DEV__) {
   require("./ReactotronConfig");
@@ -22,6 +24,8 @@ export default function App() {
     Bold: require("./assets/font/Pretendard-Bold.otf"),
     SCDream: require("./assets/font/SCDream-Bold.otf"),
   });
+
+  const [safearea] = useAtom(safeAreaAtom);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded || fontError) {
@@ -43,7 +47,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView onLayout={onLayoutRootView} style={{ flex: 1 }} edges={[]}>
+      <SafeAreaView onLayout={onLayoutRootView} style={{ flex: 1 }} edges={safearea}>
         <CustomStatusBar />
         <NavigationContainer linking={linking} fallback={<Text>로딩 중..</Text>}>
           <AppBase />
