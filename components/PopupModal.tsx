@@ -2,12 +2,28 @@ import { Dimensions, GestureResponderEvent, TouchableWithoutFeedback, View } fro
 import styled from "styled-components/native";
 
 interface PopupModalProps {
+  type: "alert" | "error";
   hideModal: () => void;
   onPressGrayButton: () => void;
   onPressBlackButton: () => void;
 }
 
-export default function PopupModal({ hideModal, onPressGrayButton, onPressBlackButton }: PopupModalProps) {
+export default function PopupModal({ type, hideModal, onPressGrayButton, onPressBlackButton }: PopupModalProps) {
+  const modalText =
+    type === "alert"
+      ? {
+          title: "가게를 이대로 완성하실 건가요?",
+          description: ["가게 사진을 추가했을 때 손님들이 더 좋아해요.", "이대로 가게를 완성하실 건가요?"],
+          grayButton: "사진 추가하기",
+          blackButton: "이대로 완성하기",
+        }
+      : {
+          title: "사진 업로드에 문제가 생겼어요.",
+          description: ["같은 문제가 반복된다면 앱을 껐다 켜주세요."],
+          grayButton: "닫기",
+          blackButton: "다시 시도하기",
+        };
+
   const onPressBackdrop = (event: GestureResponderEvent) => {
     if (event.target === event.currentTarget) hideModal();
   };
@@ -16,17 +32,20 @@ export default function PopupModal({ hideModal, onPressGrayButton, onPressBlackB
     <TouchableWithoutFeedback onPress={onPressBackdrop}>
       <Container>
         <Background>
-          <Title>가게를 이대로 완성하실 건가요?</Title>
+          <Title allowFontScaling={false}>{modalText.title}</Title>
           <View>
-            <Description>가게 사진을 추가했을 때 손님들이 더 좋아해요.</Description>
-            <Description>이대로 가게를 완성하실 건가요?</Description>
+            {modalText.description.map((text, i) => (
+              <Description allowFontScaling={false} key={i}>
+                {text}
+              </Description>
+            ))}
           </View>
           <ButtonContainer>
             <GrayButton onPress={onPressGrayButton}>
-              <GrayButtonText>사진 추가하기</GrayButtonText>
+              <GrayButtonText allowFontScaling={false}>{modalText.grayButton}</GrayButtonText>
             </GrayButton>
             <BlackButton onPress={onPressBlackButton}>
-              <BlackButtonText>이대로 완성하기</BlackButtonText>
+              <BlackButtonText allowFontScaling={false}>{modalText.blackButton}</BlackButtonText>
             </BlackButton>
           </ButtonContainer>
         </Background>

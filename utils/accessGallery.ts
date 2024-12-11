@@ -1,6 +1,11 @@
 import * as ImagePicker from "expo-image-picker";
-import { PRESIGNED_URL_SERVER } from "@env";
+import { PRESIGNED_URL_SERVER, SERVER_URL } from "@env";
 import mime from "mime";
+
+interface UploadImageResponse {
+  isSuccess: boolean;
+  fileName?: string;
+}
 
 export interface ImageUploadResultT {
   isSuccess: boolean;
@@ -19,7 +24,10 @@ export const openGallery = async (): Promise<ImagePicker.ImagePickerResult> => {
   return result;
 };
 
-export const uploadImage = async (storeId: string, imageInfo: ImagePicker.ImagePickerAsset): Promise<boolean> => {
+export const uploadImage = async (
+  storeId: string,
+  imageInfo: ImagePicker.ImagePickerAsset,
+): Promise<UploadImageResponse> => {
   try {
     const fileName = imageInfo.uri.split("/").pop();
     const fileExtension = fileName?.split(".").pop();
@@ -28,10 +36,10 @@ export const uploadImage = async (storeId: string, imageInfo: ImagePicker.ImageP
     const presignedURL = await getPresignedUrl(fileFullName);
     const isUploadS3Success = await uploadImageOnS3(imageInfo, presignedURL, fileFullName);
 
-    if (isUploadS3Success) return true;
-    else return true;
+    if (isUploadS3Success) return { isSuccess: true, fileName: fileFullName };
+    else return { isSuccess: false };
   } catch (error) {
-    return false;
+    return { isSuccess: false };
   }
 };
 
@@ -60,6 +68,19 @@ const uploadImageOnS3 = async (image: ImagePicker.ImagePickerAsset, presignedURL
     return true;
   } catch (error) {
     console.log("upload image to s3 error", error);
+    return false;
+  }
+};
+
+export const patchStoreImageInfo = async (filename: string, storeId: string): Promise<boolean> => {
+  try {
+    const response = await fetch(`${SERVER_URL}/stores/${storeId}/modifyImage`, {
+      method: "PATCH",
+      body: JSON.stringify({ modifyImage: filename }),
+      headers: { "Content-Type": "application/json" },
+    });
+    return true;
+  } catch (error) {
     return false;
   }
 };

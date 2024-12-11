@@ -4,7 +4,7 @@ import LeftArrowIcon from "../assets/image/chevron-left-outlined.svg";
 import InfoIcon from "../assets/image/info-circle-filled.svg";
 import { useCallback, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
-import { openGallery, uploadImage } from "@utils/accessGallery";
+import { openGallery, patchStoreImageInfo, uploadImage } from "@utils/accessGallery";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { HomeNavProps } from "navigators/HomeNav";
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
@@ -21,6 +21,7 @@ export default function ImageUploadPage({ route }: ImageUploadPageProps) {
   const [, setIsTabVisible] = useAtom(isTabVisibleAtom);
   const [, setStatusbarStyle] = useAtom(statusbarAtom);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [modalType, setModalType] = useState<"alert" | "error">("alert");
   const [storeImage, setStoreImage] = useState<null | ImagePicker.ImagePickerAsset>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -37,10 +38,23 @@ export default function ImageUploadPage({ route }: ImageUploadPageProps) {
   const onPressLeaveButton = async () => {
     if (storeImage !== null) {
       setIsLoading(true);
-      const result = await uploadImage(storeId, storeImage);
-      if (result) navigation.goBack();
-      setIsLoading(false);
+      const uploadFileResult = await uploadImage(storeId, storeImage);
+      if (uploadFileResult.isSuccess && uploadFileResult.fileName) {
+        const uploadInfoResult = await patchStoreImageInfo(uploadFileResult.fileName, storeId);
+
+        // 둘 다 성공
+        if (uploadInfoResult) {
+          setIsLoading(false);
+          navigation.goBack();
+        } else handlerError(); // 가게 이미지 정보 업로드 오류
+      } else handlerError(); // S3 업로드 오류
     }
+  };
+
+  const handlerError = () => {
+    setIsLoading(false);
+    setModalType("error");
+    setShowModal(true);
   };
 
   const onPressModalGrayButton = () => {
@@ -49,7 +63,8 @@ export default function ImageUploadPage({ route }: ImageUploadPageProps) {
 
   const onPressModalBlackButton = () => {
     setShowModal(false);
-    navigation.goBack();
+    if (modalType === "error") onPressLeaveButton();
+    else navigation.goBack();
   };
 
   useFocusEffect(
@@ -119,6 +134,7 @@ export default function ImageUploadPage({ route }: ImageUploadPageProps) {
       )}
       {showModal && (
         <PopupModal
+          type={modalType}
           onPressBlackButton={onPressModalBlackButton}
           onPressGrayButton={onPressModalGrayButton}
           hideModal={() => setShowModal(false)}

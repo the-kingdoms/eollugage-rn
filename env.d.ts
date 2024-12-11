@@ -1,6 +1,7 @@
 declare module "@env" {
   export const PRESIGNED_URL_SERVER: string;
   export const BASE_URL: string;
+  export const SERVER_URL: string;
 }
 
 declare module "*.svg" {
