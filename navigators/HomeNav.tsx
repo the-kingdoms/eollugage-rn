@@ -9,6 +9,7 @@ export type HomeNavProps = {
   home: undefined;
   imageUpload: {
     storeId: string;
+    from: "home" | "join";
   };
 };
 

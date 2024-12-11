@@ -10,22 +10,24 @@ import { HomeNavProps } from "navigators/HomeNav";
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
 import { useAtom } from "jotai";
 import { isTabVisibleAtom, statusbarAtom } from "datas/atoms";
+import PopupModal from "@components/PopupModal";
 
 type ImageUploadPageProps = StackScreenProps<HomeNavProps, "imageUpload">;
 
 export default function ImageUploadPage({ route }: ImageUploadPageProps) {
   const storeId = route.params.storeId;
+  const from = route.params.from;
 
   const [, setIsTabVisible] = useAtom(isTabVisibleAtom);
   const [, setStatusbarStyle] = useAtom(statusbarAtom);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [storeImage, setStoreImage] = useState<null | ImagePicker.ImagePickerAsset>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const navigation = useNavigation<StackNavigationProp<HomeNavProps>>();
 
   const imageWidth = Dimensions.get("window").width - 32;
   const imageHeight = imageWidth * 0.66;
-
-  const [storeImage, setStoreImage] = useState<null | ImagePicker.ImagePickerAsset>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onPressSelectButton = async () => {
     const result = await openGallery();
@@ -39,6 +41,15 @@ export default function ImageUploadPage({ route }: ImageUploadPageProps) {
       if (result) navigation.goBack();
       setIsLoading(false);
     }
+  };
+
+  const onPressModalGrayButton = () => {
+    setShowModal(false);
+  };
+
+  const onPressModalBlackButton = () => {
+    setShowModal(false);
+    navigation.goBack();
   };
 
   useFocusEffect(
@@ -55,7 +66,7 @@ export default function ImageUploadPage({ route }: ImageUploadPageProps) {
 
   return (
     <Container>
-      <View>
+      <View style={{ paddingLeft: 16, paddingRight: 16 }}>
         <Header>
           <BackButton onPress={() => navigation.goBack()}>
             <LeftArrowIcon />
@@ -87,7 +98,9 @@ export default function ImageUploadPage({ route }: ImageUploadPageProps) {
             <SelectText allowFontScaling={false}>앨범에서 선택하기</SelectText>
           </SelectButton>
           <TouchableOpacity>
-            <SkipText allowFontScaling={false}>나중에 추가하기</SkipText>
+            <SkipText allowFontScaling={false} onPress={() => setShowModal(true)}>
+              나중에 추가하기
+            </SkipText>
           </TouchableOpacity>
         </ButtonContainer>
       ) : (
@@ -104,6 +117,13 @@ export default function ImageUploadPage({ route }: ImageUploadPageProps) {
           </TouchableOpacity>
         </ButtonContainer>
       )}
+      {showModal && (
+        <PopupModal
+          onPressBlackButton={onPressModalBlackButton}
+          onPressGrayButton={onPressModalGrayButton}
+          hideModal={() => setShowModal(false)}
+        />
+      )}
     </Container>
   );
 }
@@ -111,7 +131,6 @@ export default function ImageUploadPage({ route }: ImageUploadPageProps) {
 const Container = styled.View`
   flex: 1;
   background-color: white;
-  padding: 0 16px;
   justify-content: space-between;
 `;
 
@@ -158,6 +177,7 @@ const Description = styled.Text`
 const ButtonContainer = styled.View`
   gap: 8px;
   align-items: center;
+  padding: 0 16px;
 `;
 
 const SelectButton = styled.TouchableOpacity`
