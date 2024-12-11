@@ -29,6 +29,8 @@ export const uploadImage = async (
   imageInfo: ImagePicker.ImagePickerAsset,
 ): Promise<UploadImageResponse> => {
   try {
+    if (storeId.length === 0) return { isSuccess: false };
+
     const fileName = imageInfo.uri.split("/").pop();
     const fileExtension = fileName?.split(".").pop();
     const fileFullName = `eollugage-store/${storeId}.${fileExtension}`;
