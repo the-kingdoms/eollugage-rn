@@ -19,15 +19,9 @@ export default function HomeNav() {
   const [storeId] = useAtom(storeIdAtom);
 
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="home"
-        children={() => <WebviewContainer uri={`${BASE_URL}/${storeId}/home`} />}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen name="imageUpload" component={ImageUploadPage} options={{ headerShown: false }} />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="home" children={() => <WebviewContainer uri={`${BASE_URL}/${storeId}/home`} />} />
+      <Stack.Screen name="imageUpload" component={ImageUploadPage} />
     </Stack.Navigator>
   );
 }

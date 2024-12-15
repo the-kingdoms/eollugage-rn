@@ -1,14 +1,14 @@
 import BottomTabNav from "./BottomTabNav";
-import JoinWebViewContainer from "pages/JoinWebViewContainer";
 import { useAtom } from "jotai";
-import { pathnameAtom, storeIdAtom } from "datas/atoms";
+import { isLoggedInAtom, pathnameAtom, storeIdAtom } from "datas/atoms";
 import { getStoreId } from "@utils/parsePathname";
 import { useEffect, useState } from "react";
+import JoinNav from "./JoinNav";
 
 export default function AppBase() {
   const [pathname] = useAtom(pathnameAtom);
   const [storeId, setStoreId] = useAtom(storeIdAtom);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom);
 
   const currentStoreId = getStoreId(pathname);
 
@@ -20,5 +20,5 @@ export default function AppBase() {
   }, [currentStoreId]);
 
   if (isLoggedIn) return <BottomTabNav />;
-  return <JoinWebViewContainer />;
+  return <JoinNav />;
 }

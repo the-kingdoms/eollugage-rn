@@ -9,10 +9,13 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { HomeNavProps } from "navigators/HomeNav";
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
 import { useAtom } from "jotai";
-import { isTabVisibleAtom, safeAreaAtom, statusbarAtom } from "datas/atoms";
+import { isLoggedInAtom, isTabVisibleAtom, safeAreaAtom, statusbarAtom, storeIdAtom } from "datas/atoms";
 import PopupModal from "@components/PopupModal";
+import { JoinNavProps } from "navigators/JoinNav";
 
-type ImageUploadPageProps = StackScreenProps<HomeNavProps, "imageUpload">;
+type ImageUploadPageProps =
+  | StackScreenProps<HomeNavProps, "imageUpload">
+  | StackScreenProps<JoinNavProps, "imageUpload">;
 
 export default function ImageUploadPage({ route }: ImageUploadPageProps) {
   const storeId = route.params.storeId;
@@ -21,15 +24,23 @@ export default function ImageUploadPage({ route }: ImageUploadPageProps) {
   const [, setSafeArea] = useAtom(safeAreaAtom);
   const [, setIsTabVisible] = useAtom(isTabVisibleAtom);
   const [, setStatusbarStyle] = useAtom(statusbarAtom);
+  const [, setIsLoggedIn] = useAtom(isLoggedInAtom);
+  const [, setStoreId] = useAtom(storeIdAtom);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<"alert" | "error">("alert");
   const [storeImage, setStoreImage] = useState<null | ImagePicker.ImagePickerAsset>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const navigation = useNavigation<StackNavigationProp<HomeNavProps>>();
+  const homeNavigation = useNavigation<StackNavigationProp<HomeNavProps>>();
+  const joinNavigation = useNavigation<StackNavigationProp<JoinNavProps>>();
 
   const imageWidth = Dimensions.get("window").width - 32;
   const imageHeight = imageWidth * 0.66;
+
+  const onPressBackButton = () => {
+    if (from === "home") homeNavigation.goBack();
+    else joinNavigation.goBack();
+  };
 
   const onPressSelectButton = async () => {
     const result = await openGallery();
@@ -46,7 +57,11 @@ export default function ImageUploadPage({ route }: ImageUploadPageProps) {
         // 둘 다 성공
         if (uploadInfoResult) {
           setIsLoading(false);
-          navigation.goBack();
+          if (from === "home") homeNavigation.goBack();
+          else {
+            setIsLoggedIn(true);
+            setStoreId(storeId);
+          }
         } else handlerError(); // 가게 이미지 정보 업로드 오류
       } else handlerError(); // S3 업로드 오류
     }
@@ -65,7 +80,13 @@ export default function ImageUploadPage({ route }: ImageUploadPageProps) {
   const onPressModalBlackButton = () => {
     setShowModal(false);
     if (modalType === "error") onPressLeaveButton();
-    else navigation.goBack();
+    else {
+      if (from === "home") homeNavigation.goBack();
+      else {
+        setIsLoggedIn(true);
+        setStoreId(storeId);
+      }
+    }
   };
 
   useFocusEffect(
@@ -86,14 +107,17 @@ export default function ImageUploadPage({ route }: ImageUploadPageProps) {
     <Container>
       <View style={{ paddingLeft: 16, paddingRight: 16 }}>
         <Header>
-          <BackButton onPress={() => navigation.goBack()}>
+          <BackButton onPress={onPressBackButton}>
             <LeftArrowIcon />
           </BackButton>
+          {from === "home" && <HeaderText>가게 대표 사진 추가</HeaderText>}
         </Header>
-        <TitleContainer>
-          <Title allowFontScaling={false}>가게 메뉴판에 사용할</Title>
-          <Title allowFontScaling={false}>대표 이미지를 추가해주세요</Title>
-        </TitleContainer>
+        {from === "join" && (
+          <TitleContainer>
+            <Title allowFontScaling={false}>가게 메뉴판에 사용할</Title>
+            <Title allowFontScaling={false}>대표 이미지를 추가해주세요</Title>
+          </TitleContainer>
+        )}
 
         <Image
           style={{ width: imageWidth, height: imageHeight }}
@@ -154,15 +178,30 @@ const Container = styled.View`
 `;
 
 const Header = styled.View`
-  padding: 0 -2px;
+  padding: 8px -2px;
   margin-bottom: 24px;
+  position: relative;
+  min-height: 32px;
 `;
 
 const BackButton = styled.TouchableOpacity`
+  position: absolute;
+  left: 0;
+  top: 2px;
   justify-content: center;
   align-items: center;
   height: 30px;
   width: 30px;
+`;
+
+const HeaderText = styled.Text`
+  font-size: 16px;
+  font-family: Medium;
+  font-weight: 500;
+  color: #161616;
+  line-height: 20px;
+  letter-spacing: -0.5px;
+  align-self: center;
 `;
 
 const TitleContainer = styled.View`
