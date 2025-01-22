@@ -5,7 +5,6 @@ import { getPathnameExceptStoreId } from "@utils/parsePathname";
 import { isBottomTabShowScreen } from "@utils/showBottomTabScreen";
 import { isTabVisibleAtom, pathnameAtom } from "datas/atoms";
 import IpcMessageAtom from "datas/message";
-import { setThemeAtom, webviewStyleAtom } from "datas/style";
 import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import { BackHandler, LayoutChangeEvent, SafeAreaView } from "react-native";
@@ -20,8 +19,6 @@ interface WebviewContainerProps {
 function WebviewContainer({ onLayout, uri }: WebviewContainerProps) {
   const webviewRef = useRef<WebView>(null);
   const [webviewNavigationState, setWebviewNavigationState] = useState<WebViewNavigation | undefined>(undefined);
-  const [webviewStyle] = useAtom(webviewStyleAtom);
-  const [, setTheme] = useAtom(setThemeAtom);
   const [, setIpcMessageAtom] = useAtom(IpcMessageAtom);
   const [, setPathname] = useAtom(pathnameAtom);
   const [bottomTabVisibility, setTabVisibility] = useAtom(isTabVisibleAtom);
@@ -42,7 +39,6 @@ function WebviewContainer({ onLayout, uri }: WebviewContainerProps) {
     if (webviewNavigationState?.url) {
       const url = new URL(webviewNavigationState.url);
 
-      if (url.pathname !== "/") setTheme("light");
       setBottomTabVisibility(url.pathname);
       setPathname(url.pathname);
     }
@@ -55,10 +51,10 @@ function WebviewContainer({ onLayout, uri }: WebviewContainerProps) {
   };
 
   return (
-    <SafeAreaView style={webviewStyle.container} onLayout={onLayout}>
+    <SafeAreaView onLayout={onLayout} style={{ flex: 1 }}>
       <WebView
-        style={webviewStyle.webview}
         ref={webviewRef}
+        style={{ flex: 1 }}
         onNavigationStateChange={setWebviewNavigationState}
         source={{ uri }}
         onMessage={e => onMessageHandler(e, setIpcMessageAtom)}

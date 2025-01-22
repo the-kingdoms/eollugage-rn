@@ -1,26 +1,19 @@
-import { SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
-import { atom, useAtom } from "jotai";
-import { statusBarStyleAtom } from "datas/style";
-
-const STATUSBAR_HEIGHT = StatusBar.currentHeight;
-
-const styles = StyleSheet.create({
-  statusBar: {
-    height: STATUSBAR_HEIGHT,
-  },
-});
+import { View } from "react-native";
+import { useAtom } from "jotai";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
+import { statusbarAtom } from "datas/atoms";
 
 function CustomStatusBar() {
-  const [statusBarStyle] = useAtom(statusBarStyleAtom);
+  const [statusbarStyle] = useAtom(statusbarAtom);
+  const { top } = useSafeAreaInsets();
 
   return (
-    <View style={[styles.statusBar, { backgroundColor: statusBarStyle.backgroundColor }]}>
-      <SafeAreaView>
-        <StatusBar barStyle={statusBarStyle.barStyle} backgroundColor={statusBarStyle.backgroundColor} translucent />
-      </SafeAreaView>
-    </View>
+    <>
+      <View style={{ height: top, backgroundColor: statusbarStyle.color }} />
+      <StatusBar style={statusbarStyle.style} />
+    </>
   );
 }
 
-export { statusBarStyleAtom };
 export default CustomStatusBar;

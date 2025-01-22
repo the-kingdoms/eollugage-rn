@@ -6,10 +6,12 @@ interface IpcMessage {
     | "deleteLoginToken"
     | "getPlatform"
     | "getAppleIdentifyToken"
-    | "accessGallery"
+    | "navigateToImageUploadPage"
     | "getImageUploadResult"
     | "getAppInfo"
     | "openKakaoInquire"
+    | "setStatusbarStyle"
+    | "setSafeAreaEdges"
     | "";
   data?: any;
 }

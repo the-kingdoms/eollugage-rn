@@ -13,9 +13,11 @@ import {
   getLoginTokenFromStore,
   setLoginTokenFromStore,
 } from "@utils/loginToken";
+import { safeAreaAtom, statusbarAtom } from "datas/atoms";
 import fcmTokenAtom from "datas/fcmtoken";
 import IpcMessageAtom from "datas/message";
 import { useAtom } from "jotai";
+import { HomeNavProps } from "navigators/HomeNav";
 import { MyPageNavProps } from "navigators/MypageNav";
 import { useEffect } from "react";
 import { Linking } from "react-native";
@@ -28,8 +30,11 @@ interface IpcContainerProps {
 export default function IpcContainer({ webviewRef }: IpcContainerProps) {
   const [ipcMessage, setIpcMessage] = useAtom(IpcMessageAtom);
   const [fcmToken] = useAtom(fcmTokenAtom);
+  const [, setStatusbarStyle] = useAtom(statusbarAtom);
+  const [, setSafeArea] = useAtom(safeAreaAtom);
 
-  const { navigate } = useNavigation<StackNavigationProp<MyPageNavProps, "Mypage">>();
+  const { navigate: homeNavigate } = useNavigation<StackNavigationProp<HomeNavProps, "home">>();
+  const { navigate: mypageNavigate } = useNavigation<StackNavigationProp<MyPageNavProps, "Mypage">>();
 
   useEffect(() => {
     switch (ipcMessage.type) {
@@ -48,13 +53,9 @@ export default function IpcContainer({ webviewRef }: IpcContainerProps) {
           if (data) sendIdentifyToken({ webviewRef, data });
         });
         break;
-      case "accessGallery":
-        console.log("[IpcContainer] open gallery called");
-        uploadImage(ipcMessage.data).then((result: ImageUploadResultT) => {
-          console.log("[IpcContainer] upload image result:", new Date().toTimeString(), result);
-          if (result) sendImageUploadResult({ webviewRef, data: result });
-          setIpcMessage({ type: "" });
-        });
+      case "navigateToImageUploadPage":
+        console.log("[IpcContainer] navigateToImageUploadPage called");
+        if (ipcMessage.data) homeNavigate("imageUpload", ipcMessage.data);
         break;
       case "getLoginToken":
         console.log("[IpcContainer] getLoginToken called");
@@ -76,11 +77,18 @@ export default function IpcContainer({ webviewRef }: IpcContainerProps) {
         });
         break;
       case "getAppInfo":
-        navigate("Info");
+        mypageNavigate("Info");
         break;
       case "openKakaoInquire":
         Linking.openURL("https://pf.kakao.com/_gxmxoIn/chat");
         break;
+      case "setStatusbarStyle":
+        console.log("[IpcContainer] setStatusbarStyle called");
+        if (ipcMessage.data) setStatusbarStyle(ipcMessage.data);
+        break;
+      case "setSafeAreaEdges":
+        console.log("[IpcContainer] setSafeAreaEdges called");
+        if (ipcMessage.data) setSafeArea(ipcMessage.data);
     }
   }, [ipcMessage]);
   return <></>;
