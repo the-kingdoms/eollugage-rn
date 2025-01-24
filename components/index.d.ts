@@ -12,6 +12,7 @@ interface IpcMessage {
     | "openKakaoInquire"
     | "setStatusbarStyle"
     | "setSafeAreaEdges"
+    | "copyMessage"
     | "";
   data?: any;
 }
