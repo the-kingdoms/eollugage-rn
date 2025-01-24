@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "얼루가게",
+    "owner": "expo-bot",
     "slug": "eolluga-rn",
     "version": "2.0.0",
     "orientation": "portrait",
