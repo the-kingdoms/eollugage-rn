@@ -22,6 +22,7 @@ import { MyPageNavProps } from "navigators/MypageNav";
 import { useEffect } from "react";
 import { Linking } from "react-native";
 import WebView from "react-native-webview";
+import { setString, setStringAsync } from "expo-clipboard";
 
 interface IpcContainerProps {
   webviewRef: React.RefObject<WebView<{}>>;
@@ -89,6 +90,11 @@ export default function IpcContainer({ webviewRef }: IpcContainerProps) {
       case "setSafeAreaEdges":
         console.log("[IpcContainer] setSafeAreaEdges called");
         if (ipcMessage.data) setSafeArea(ipcMessage.data);
+        break;
+      case "copyMessage":
+        console.log("[IpcContainer] copyMessage called");
+        if (ipcMessage.data) async () => await setStringAsync(ipcMessage.data);
+        break;
     }
   }, [ipcMessage]);
   return <></>;
